@@ -49,7 +49,8 @@ func (s *SyncSignal) GetBytes() ([]Byte, error) {
 func (s *SyncSignal) AddBit(bit Bit) error {
     if s.lastBit != nil {
         duration := time.Since(s.lastBit.Timestamp)
-        if duration < s.pulseWidth {
+        r := NewRangeFromDuration(s.pulseWidth, 0.3)
+        if DurationWithinRange(duration, r) == false {
             fmt.Println("Skipping bit")
             return errors.New("New bit within pulse width not allowed")
         }
@@ -70,6 +71,7 @@ type DataSignal struct {
     start Bit
     stop Bit
     
+    lastBit *Bit
     pulseWidth time.Duration
     bits []Bit
 }
@@ -113,9 +115,19 @@ func (d *DataSignal) GetBytes() ([]Byte, error) {
 }
 
 func (b *DataSignal) AddBit(bit Bit) error {
+    if b.lastBit != nil {
+        duration := time.Since(b.lastBit.Timestamp)
+        r := NewRangeFromDuration(b.pulseWidth, 0.5)
+        if DurationWithinRange(duration, r) == false {
+            fmt.Println("Skipping bit")
+            return errors.New("New bit within pulse width not allowed")
+        }
+    }
+    
     var err error
     if len(b.bits) < cap(b.bits) {
         b.bits = append(b.bits, bit)
+        b.lastBit = &bit
     } else {
         err = errors.New("Data byte already full")
     }

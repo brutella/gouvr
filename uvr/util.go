@@ -3,7 +3,25 @@ package uvr
 import (
     "errors"
     "fmt"
+    "time"
 )
+
+type Range struct {
+    low time.Duration
+    high time.Duration
+}
+
+func NewRangeFromDuration(d time.Duration, percentage float32) Range {
+    deviation := time.Duration(float32(d) * percentage)
+    return Range{
+        low: d - deviation,
+        high: d + deviation,
+    }
+}
+
+func DurationWithinRange(d time.Duration, r Range) bool {
+    return d > r.low && d < r.high
+}
 
 func ByteFromBits(bits []Bit) Byte {
     var value uint8
