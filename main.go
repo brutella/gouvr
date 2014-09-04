@@ -13,9 +13,10 @@ func main() {
     pin, err := embd.NewDigitalPin(10)
     if err != nil {
         log.Println("Could not access digital pin.", err)
-    }    
-    _, err = uvr.New(pin, uvr.DeviceTypeUVR1611)
-    if err != nil {
-        log.Println("Could create UVR 1611", err)
+    }
+    
+    // wait
+    select {
+        
     }
 }
