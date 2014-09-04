@@ -5,6 +5,7 @@ import(
     "time"
 )
 
+// Packet receiver
 type packetReceiver struct {
     PacketConsumer
     packet Packet
@@ -15,6 +16,7 @@ func (p *packetReceiver) Consume(packet Packet) error {
     return nil
 }
 
+// Byte receiver
 type byteReceiver struct {
     ByteConsumer
     bytes []Byte
@@ -29,6 +31,7 @@ func (receiver *byteReceiver) Consume(b Byte) error {
     return nil
 }
 
+// Bit receiver
 type bitReceiver struct {
     BitConsumer
     bits []Bit

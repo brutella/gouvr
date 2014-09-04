@@ -21,12 +21,17 @@ type fileLogger struct {
     buffer []byte
 }
 
-func NewFileLogger(filePath string) *fileLogger {
+func NewFileLogger(filePath string, buffer_size int) *fileLogger {
     l := &fileLogger{}
     l.filePath = filePath
-    l.buffer = make([]byte, 0, 255)
+    l.buffer = make([]byte, 0, buffer_size)
     
     return l
+}
+
+func (l *fileLogger) Flush() {
+    l.writeBufferToFile()
+    l.reset()
 }
 
 func (l *fileLogger) reset() {

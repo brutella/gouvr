@@ -1,7 +1,7 @@
 package main
 
 import(
-    "gouvr/uvr"
+    _"gouvr/uvr"
     "log"
     "github.com/kidoman/embd"
     _"github.com/kidoman/embd/host/bbb"
@@ -13,10 +13,8 @@ func main() {
     pin, err := embd.NewDigitalPin(10)
     if err != nil {
         log.Println("Could not access digital pin.", err)
+        return
     }
     
-    // wait
-    select {
-        
-    }
+    pin.Read()
 }
