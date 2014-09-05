@@ -3,6 +3,8 @@ package uvr
 import(
     "math/big"
     "time"
+    "os"
+    "strconv"
 )
 
 // Packet receiver
@@ -57,4 +59,8 @@ func writeWords(words []big.Word, c WordConsumer, t timeout) {
         c.Consume(w)
         time.Sleep(t.duration)
     }
+}
+
+func RandomTempFilePath() string {
+    return os.TempDir() + "/" + strconv.FormatInt(time.Now().Unix(), 10) + ".log"
 }
