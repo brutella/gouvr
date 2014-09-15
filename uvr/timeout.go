@@ -43,13 +43,3 @@ func (t Timeout) IsFutureSince(timestamp time.Time) bool {
     
     return false
 }
-
-func (t Timeout) PlausibleSince(timestamp time.Time) bool {
-    duration := time.Since(timestamp)
-    fmt.Sprintf("%d > %d && %d < %d", duration, t.min(), duration, t.max())
-    if t.IsFutureSince(timestamp) == false && t.IsPastSince(timestamp) == false {
-        return true
-    }
-    
-    return false
-}
