@@ -29,11 +29,11 @@ type Packet struct {
     input14 uvr.Value       // 35, 36
     input15 uvr.Value       // 37, 38
     input16 uvr.Value       // 39, 40
-    outgoing uvr.Value        // 41, 42
-    speedStepA1 uvr.Byte     // 43
-    speedStepA2 uvr.Byte     // 44
-    speedStepA6 uvr.Byte     // 45
-    speedStepA7 uvr.Byte     // 46
+    outgoing uvr.Value      // 41, 42
+    speedStepA1 uvr.Byte    // 43
+    speedStepA2 uvr.Byte    // 44
+    speedStepA6 uvr.Byte    // 45
+    speedStepA7 uvr.Byte    // 46
     heatRegister uvr.HeatMeterRegister // 47
     heatMeter1 uvr.HeatMeterValue // 48, 49, 50, 51 | 52, 53 | 54, 55
     heatMeter2 uvr.HeatMeterValue // 56, 57, 58, 59 | 60, 61 | 62, 63
