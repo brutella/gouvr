@@ -73,6 +73,18 @@ type UVR1611PacketConsumer interface {
     Consume(p UVR1611Packet) error
 }
 
+// Returns the sum of all bytes modulo 256
+func ChecksumFromBytes(bytes []Byte) Byte {
+    var checksum Byte
+    
+    for _, b := range bytes {
+        checksum += b
+    }
+    
+    return checksum
+}
+
+// Returns a uvr1611 packet from a list of bytes or an error
 func UVR1611PacketFromBytes(bytes []Byte) (UVR1611Packet, error){
     var err error
     var packet = UVR1611Packet{}
@@ -107,8 +119,13 @@ func UVR1611PacketFromBytes(bytes []Byte) (UVR1611Packet, error){
         packet.heatMeter1 = NewHeatMeterValue(bytes[47:55])
         packet.heatMeter2 = NewHeatMeterValue(bytes[55:63])
         packet.checksum = bytes[63]
+        
+        checksum := ChecksumFromBytes(bytes[0:63])
+        if packet.checksum != checksum {
+            err = errors.New(fmt.Sprintf("Invalid checksum %d should be %d.", checksum, packet.checksum))
+        }
     } else {
-        err = errors.New(fmt.Sprintf("Invalid number of uvr1611 packet bytes: %d", len(bytes)))
+        err = errors.New(fmt.Sprintf("Invalid number of uvr1611 packet bytes: %d.", len(bytes)))
     }
     
     return packet, err
@@ -139,7 +156,7 @@ func (d *uvr1611PacketDecoder) Consume(b Byte) error {
         d.Reset()
         packet, err := UVR1611PacketFromBytes(bytes)
         if err != nil {
-            fmt.Println("Could not parse packet bytes", err)
+            fmt.Println("Could not parse packet bytes.", err)
         } else {
             d.consumer.Consume(packet)
         }
