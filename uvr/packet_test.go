@@ -13,7 +13,7 @@ func TestPacketConsumer(t *testing.T) {
     byteDecoder     := NewByteDecoder(packetDecoder, bitsTimeout)
     
     syncBitsTimeout := NewTimeout(488.0, 0.5)
-    syncDecoder     := NewSyncDecoder(byteDecoder, syncBitsTimeout)
+    syncDecoder     := NewSyncDecoder(byteDecoder, byteDecoder, syncBitsTimeout)
     
     signal := NewSignal(syncDecoder)
     

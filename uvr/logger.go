@@ -46,6 +46,7 @@ func (l *fileLogger) writeBufferToFile() {
     
     defer file.Close()
     
+    fmt.Println("Save...")
     _, err = file.Write(l.buffer)
     file.Sync()
     if err != nil {

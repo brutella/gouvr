@@ -10,7 +10,7 @@ import (
 func TestInvalidSync(t *testing.T) {    
     bitReceiver := NewTestBitReceiver()
     timeout     := NewTimeout(244.0, 0.3)
-    syncDecoder := NewSyncDecoder(bitReceiver, timeout)    
+    syncDecoder := NewSyncDecoder(bitReceiver, nil, timeout)    
     signal := NewSignal(syncDecoder)
     
     writeWords([]big.Word{1,1,1,0,1,1,1,1}, signal, timeout)
@@ -20,7 +20,7 @@ func TestInvalidSync(t *testing.T) {
 func TestValidSync(t *testing.T) {    
     bitReceiver := NewTestBitReceiver()
     timeout     := NewTimeout(244.0, 0.3)
-    syncDecoder := NewSyncDecoder(bitReceiver, timeout)    
+    syncDecoder := NewSyncDecoder(bitReceiver, nil, timeout)    
     signal := NewSignal(syncDecoder)
     
     writeWords([]big.Word{0,0,1,1,1,1,1,1,1,1}, signal, timeout)
@@ -46,7 +46,7 @@ func TestSyncFromLog(t *testing.T) {
     }
     bitReceiver := NewTestBitReceiver()
     timeout     := NewTimeout(488.0, 0.3)
-    syncDecoder := NewSyncDecoder(bitReceiver, timeout)        
+    syncDecoder := NewSyncDecoder(bitReceiver, nil, timeout)        
     writeBits(bits, syncDecoder)
     assert.True(t, syncDecoder.synced)
 }

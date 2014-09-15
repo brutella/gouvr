@@ -29,6 +29,10 @@ func (d *packetDecoder) resetBytes() {
     d.bytes = make([]Byte, 0, cap(d.bytes))
 }
 
+func (d *packetDecoder) Reset() {
+    d.resetBytes()
+}
+    
 func (d *packetDecoder) Consume(b Byte) error {
     bytes := append(d.bytes, b)
     if len(bytes) == cap(d.bytes) {

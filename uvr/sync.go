@@ -3,7 +3,7 @@ package uvr
 import (
     "fmt"
     "math/big"
-    "errors"
+    "time"
 )
 
 type syncPattern struct {
@@ -16,13 +16,14 @@ type syncPattern struct {
 
 type syncDecoder struct {
     BitConsumer
-    consumer BitConsumer
+    bitConsumer BitConsumer
+    syncConsumer SyncConsumer
     synced bool
     pattern syncPattern
 }
 
-func NewSyncDecoder(consumer BitConsumer, t timeout) *syncDecoder {
-    d := &syncDecoder{consumer: consumer}
+func NewSyncDecoder(bitConsumer BitConsumer, syncConsumer SyncConsumer, t timeout) *syncDecoder {
+    d := &syncDecoder{bitConsumer: bitConsumer, syncConsumer: syncConsumer}
     
     d.pattern = syncPattern{
                     count: 8, 
@@ -33,32 +34,35 @@ func NewSyncDecoder(consumer BitConsumer, t timeout) *syncDecoder {
     return d
 }
 
-func (s *syncDecoder) reset() {
+func (s *syncDecoder) resetBits() {
     s.pattern.last = nil
     s.pattern.i = 0 // reset
     s.synced = false
 }
+func (s *syncDecoder) Reset() {
+    s.bitConsumer.Reset()
+    s.resetBits()
+}
 
 func (s *syncDecoder) Consume(bit Bit) error {
     if s.synced == true {
-        // consumer returns error when bit order is wrong
+        // bitConsumer returns error when bit order is wrong
         // e.g. wrong start/stop bit
-        err := s.consumer.Consume(bit)
+        err := s.bitConsumer.Consume(bit)
         if err != nil {
-            s.reset()
+            s.Reset()
         }
     } else {
         pattern := s.pattern
         if pattern.last != nil {
+            delta := time.Duration(bit.Timestamp.UnixNano() - pattern.last.Timestamp.UnixNano()) 
+            println(delta)
             switch bit.CompareTimeoutToLast(pattern.timeout, *pattern.last) {
             case OrderedAscending:
-                fmt.Println("Skipping")
+                fmt.Println(NewErrorf("Bit arrived too early %v", delta))
                 return nil
             case OrderedDescending:
-                err := errors.New(fmt.Sprintf("Bit arrival at %d (delta %d)is too late for timeout %d (+/- %f)", bit.Timestamp.UnixNano(), bit.Timestamp.UnixNano() - pattern.last.Timestamp.UnixNano(), pattern.timeout.duration, pattern.timeout.deviation))
-                fmt.Println(err)
-                s.reset()
-                return err
+                fmt.Println(NewErrorf("Bit arrived too late %v", delta))
             case OrderedSame:
             }
         }
@@ -67,11 +71,14 @@ func (s *syncDecoder) Consume(bit Bit) error {
             s.pattern.i++
             s.pattern.last = &bit
             if s.pattern.i == s.pattern.count {
+                if (s.syncConsumer != nil) {
+                    s.syncConsumer.SyncDone(bit.Timestamp)
+                }
                 s.synced = true
                 fmt.Println("*Synced*")
             }
         } else {
-            s.reset()
+            s.resetBits()
         }
     }
     return nil

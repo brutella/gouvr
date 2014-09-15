@@ -3,6 +3,7 @@ package uvr
 import(
     "fmt"
     "math/big"
+    "time"
 )
 
 type Byte uint8
@@ -25,6 +26,7 @@ type byteEncoding struct {
 
 type byteDecoder struct {
     BitConsumer
+    SyncConsumer
     consumer ByteConsumer
     
     encoding byteEncoding
@@ -49,53 +51,72 @@ func NewByteDecoder(consumer ByteConsumer, t timeout) *byteDecoder {
     
     return d
 }
-func (d *byteDecoder) resetBits() {
-    d.bits = make([]Bit, 0, cap(d.bits))
+
+func (d *byteDecoder) Reset() {
+    d.consumer.Reset()
+    d.reset()
+}
+
+func (d *byteDecoder) reset() {
     d.encoding.last = nil
+    d.complete()    
+}
+
+func (d *byteDecoder) complete() {
+    d.bits = make([]Bit, 0, cap(d.bits))
+}
+
+func (d *byteDecoder) SyncDone(t time.Time) {
+    // d.encoding.last = &Bit{Raw:0, Timestamp:t}
 }
     
 func (d *byteDecoder) Consume(bit Bit) error {
     encoding := d.encoding
     if encoding.last != nil {
+        delta := time.Duration(bit.Timestamp.UnixNano() - encoding.last.Timestamp.UnixNano()) 
         switch bit.CompareTimeoutToLast(encoding.timeout, *encoding.last) {
         case OrderedAscending:
-            fmt.Println("Skipping")
-            return nil
+            fmt.Print("[", bit.Raw,"]")
+            return nil // ignore
         case OrderedDescending:
-            err := NewErrorf("Bit arrival at %d is too late for timeout %d (+/- %f)", bit.Timestamp, encoding.timeout.duration, encoding.timeout.deviation)
-            d.resetBits()
+            err := NewErrorf("Bit arrived too late %v", delta)
+            fmt.Println(err)
             return err
         case OrderedSame:
-            // ok
+            
         }
     }
     
+    fmt.Print(bit.Raw)
+    
     bits := append(d.bits, bit)
+    d.encoding.last = &bit
     if len(bits) == cap(d.bits) {
         if encoding.start != nil {
             if bits[0].Raw != encoding.start.Raw {
-                d.resetBits()
-                return NewErrorf("Start bit is wrong")
+                err := NewError("Start bit is wrong")
+                fmt.Println(err)
+                return err
             }
             bits = bits[1:]
         }
         
         if encoding.stop != nil {
             if bit.Raw != encoding.stop.Raw {
-                d.resetBits()
-                return NewErrorf("Stop bit is wrong")
+                err := NewError("Stop bit is wrong")
+                fmt.Println(err)
+                return err
             }
             bits = bits[:len(bits)]
         }
         
         // FIX index
         b := ByteFromBits(bits)
-        fmt.Printf("[%b]\n", b)
-        d.resetBits()
+        fmt.Printf(" = %d [%b] \n", b, b)
+        d.complete()
         d.consumer.Consume(b)
     } else {
         d.bits = bits
-        d.encoding.last = &bit
     }
     
     return nil
