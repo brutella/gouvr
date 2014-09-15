@@ -21,5 +21,5 @@ func TestTimestampToString(t *testing.T) {
         Byte(14), // y
     }
     timestamp := NewTimestamp(bytes)
-    assert.Equal(t, timestamp.toString(), "2014-12-02 23:45:00")
+    assert.Equal(t, timestamp.ToString(), "2014-12-02 23:45:00")
 }

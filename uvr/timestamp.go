@@ -30,6 +30,6 @@ func NewTimestamp(bytes []Byte) Timestamp {
     }
 }
 
-func (t Timestamp) toString() string {
+func (t Timestamp) ToString() string {
     return fmt.Sprintf("%04d-%02d-%02d %02d:%02d:00", 2000 + int64(t.year), t.month, t.day, t.hour, t.minute)
 }

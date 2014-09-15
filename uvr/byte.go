@@ -20,7 +20,7 @@ func ByteFromBits(bits []Bit) Byte {
 type byteEncoding struct {
     start *Bit
     stop *Bit
-    timeout timeout
+    timeout Timeout
     last *Bit
 }
 
@@ -33,7 +33,7 @@ type byteDecoder struct {
     bits []Bit
 }
 
-func NewByteDecoder(consumer ByteConsumer, t timeout) *byteDecoder {
+func NewByteDecoder(consumer ByteConsumer, t Timeout) *byteDecoder {
     d := &byteDecoder{consumer:consumer}
     
     encoding := byteEncoding{}

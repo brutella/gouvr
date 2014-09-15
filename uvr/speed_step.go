@@ -12,7 +12,7 @@ func NewSpeedStep(value Byte) speedStep {
     return speedStep{value: value}
 }
 
-func (s speedStep) toString() string {
+func (s speedStep) ToString() string {
     var disabled bool = s.value & 0x80 == 0x80 // 1000 0000
     if disabled == true {
         return "?"

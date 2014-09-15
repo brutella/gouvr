@@ -35,7 +35,7 @@ const(
     OrderedDescending   = iota
 )
 
-func (b Bit) CompareTimeoutToLast(timeout timeout, last Bit) ComparisonResult {
+func (b Bit) CompareTimeoutToLast(timeout Timeout, last Bit) ComparisonResult {
     elapsed := b.Since(last)
     if timeout.min() > elapsed {
         return OrderedAscending

@@ -1,7 +1,10 @@
-package uvr
+package uvr1611
 
+import(
+    "gouvr/uvr"
+)
 // Masks
-type InputType Byte
+type InputType uvr.Byte
 
 const(
     InputTypeMask                         = 0x70 // 0111 0000
