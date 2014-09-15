@@ -1,7 +1,5 @@
 package uvr
 
-import "fmt"
-
 type packetEncoding struct {
     count int
 }

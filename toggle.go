@@ -39,7 +39,7 @@ func main() {
     pin, err := Init("P8_38")
     
     if err == nil {
-        timeout := (time.Nanosecond/(2*uvr.UVR1611Frequency))
+        timeout := (time.Nanosecond/(2*uvr1611.SignalFrequency))
     	for {
             pin.PullUp()
     		time.Sleep(timeout)

@@ -3,9 +3,12 @@ package uvr1611
 import(
     "gouvr/uvr"
 )
-// Masks
-type InputType uvr.Byte
 
+const (
+    SignalFrequency = 488
+)
+
+// Masks
 const(
     InputTypeMask                         = 0x70 // 0111 0000
     InputTypeHighValueMask                = 0x0F // 0000 1111
@@ -32,3 +35,5 @@ const (
     RoomTemperatureModeLowering  = 0x04 // 0000 0100
     RoomTemperatureModeStandby   = 0x06 // 0000 0110
 )
+
+type InputType uvr.Byte
