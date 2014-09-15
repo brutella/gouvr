@@ -41,8 +41,7 @@ type Packet struct {
 }
 
 func (p *Packet) Log() {
-    fmt.Println("Device Type:", p.deviceType)
-    fmt.Println("Inverted Device Type:", p.deviceTypeInverted)
+    fmt.Println("Device:", uvr.DeviceTypeToString(p.deviceType))
     fmt.Println("Time:", p.timestamp.ToString())
     fmt.Println("input 1:", InputValueToString(p.input1))
     fmt.Println("input 2:", InputValueToString(p.input2))

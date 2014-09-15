@@ -1,7 +1,6 @@
 package uvr
 
 import (
-    "fmt"
     "time"
 )
 
