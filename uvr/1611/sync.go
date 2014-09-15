@@ -10,13 +10,13 @@ import (
 type syncDecoder struct {
     uvr.BitConsumer
     bitConsumer uvr.BitConsumer
-    syncConsumer uvr.SyncConsumer
+    syncObserver uvr.SyncObserver
     synced bool
     pattern uvr.SyncPattern
 }
 
-func NewSyncDecoder(bitConsumer uvr.BitConsumer, syncConsumer uvr.SyncConsumer, t uvr.Timeout) *syncDecoder {
-    d := &syncDecoder{bitConsumer: bitConsumer, syncConsumer: syncConsumer}
+func NewSyncDecoder(bitConsumer uvr.BitConsumer, syncObserver uvr.SyncObserver, t uvr.Timeout) *syncDecoder {
+    d := &syncDecoder{bitConsumer: bitConsumer, syncObserver: syncObserver}
     
     d.pattern = uvr.SyncPattern{
                     Count: 32,
@@ -65,8 +65,8 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
             s.pattern.I++
             s.pattern.Last = &bit
             if s.pattern.I == s.pattern.Count {
-                if (s.syncConsumer != nil) {
-                    s.syncConsumer.SyncDone(bit.Timestamp)
+                if (s.syncObserver != nil) {
+                    s.syncObserver.SyncDone(bit.Timestamp)
                 }
                 s.synced = true
                 fmt.Println("[SYNC] Done")

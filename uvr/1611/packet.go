@@ -70,10 +70,6 @@ func (p *Packet) Log() {
     fmt.Println("Heat Meter 2:", p.heatMeter2.ToString())
 }
 
-type PacketConsumer interface {
-    Consume(p Packet) error
-}
-
 // Returns the sum of all bytes modulo 256
 func ChecksumFromBytes(bytes []uvr.Byte) uvr.Byte {
     var checksum uvr.Byte
@@ -130,40 +126,4 @@ func PacketFromBytes(bytes []uvr.Byte) (Packet, error){
     }
     
     return packet, err
-}
-
-type packetDecoder struct {
-    uvr.ByteConsumer
-    consumer PacketConsumer
-    
-    bytes []uvr.Byte
-}
-
-func NewPacketDecoder(consumer PacketConsumer) *packetDecoder {
-    d := &packetDecoder{consumer: consumer}
-    d.bytes = make([]uvr.Byte, 0, PacketByteCount)
-    
-    return d
-}
-
-func (d *packetDecoder) Reset() {
-    d.bytes = make([]uvr.Byte, 0, cap(d.bytes))
-}
-
-func (d *packetDecoder) Consume(b uvr.Byte) error {
-    bytes := append(d.bytes, b)
-    if len(bytes) == cap(d.bytes) {
-        // fmt.Printf("%v\n", bytes)
-        d.Reset()
-        packet, err := PacketFromBytes(bytes)
-        if err != nil {
-            fmt.Println("[PACKET] Could not parse packet bytes.", err)
-        } else {
-            d.consumer.Consume(packet)
-        }
-    } else {
-        d.bytes = bytes
-    }
-    
-    return nil
 }

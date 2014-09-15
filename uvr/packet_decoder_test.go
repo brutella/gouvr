@@ -6,7 +6,7 @@ import (
     "math/big"
 )
 
-func TestPacketConsumer(t *testing.T) {    
+func TestPacketDecoder(t *testing.T) {    
     packetReceiver := &packetReceiver{}
     packetDecoder   := NewPacketDecoder(packetReceiver, 2)
     bitsTimeout     := NewTimeout(244.0, 0.3)

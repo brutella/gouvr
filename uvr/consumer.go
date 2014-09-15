@@ -14,10 +14,6 @@ type BitConsumer interface {
     Reset()
 }
 
-type SyncConsumer interface {
-    SyncDone(t time.Time)
-}
-
 type ByteConsumer interface {
     Consume(b Byte) error
     Reset()
@@ -25,4 +21,9 @@ type ByteConsumer interface {
 
 type PacketConsumer interface {
     Consume(p Packet) error
+}
+
+// Called when the synchronization finished
+type SyncObserver interface {
+    SyncDone(t time.Time)
 }

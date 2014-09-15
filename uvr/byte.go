@@ -26,7 +26,7 @@ type byteEncoding struct {
 
 type byteDecoder struct {
     BitConsumer
-    SyncConsumer
+    SyncObserver
     consumer ByteConsumer
     
     encoding byteEncoding
