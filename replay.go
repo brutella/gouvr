@@ -15,7 +15,7 @@ func main() {
     replayer := uvr.NewReplayer(interrupt)
     
     packetReceiver.RegisterCallback(func(packet uvr1611.Packet) {
-        println("Received packet")
+        packet.Log()
         syncDecoder.Reset()
         byteDecoder.Reset()
         packetDecoder.Reset()

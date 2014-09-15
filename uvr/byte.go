@@ -76,10 +76,10 @@ func (d *byteDecoder) Consume(bit Bit) error {
         delta := time.Duration(bit.Timestamp.UnixNano() - encoding.last.Timestamp.UnixNano()) 
         switch bit.CompareTimeoutToLast(encoding.timeout, *encoding.last) {
         case OrderedAscending:
-            fmt.Print("[", bit.Raw,"]")
+            // fmt.Print("[", bit.Raw,"]")
             return nil // ignore
         case OrderedDescending:
-            err := NewErrorf("Bit arrived too late %v", delta)
+            err := NewErrorf("[BYTE] Bit arrived too late %v", delta)
             fmt.Println(err)
             return err
         case OrderedSame:
@@ -87,14 +87,14 @@ func (d *byteDecoder) Consume(bit Bit) error {
         }
     }
     
-    fmt.Print(bit.Raw)
+    // fmt.Print(bit.Raw)
     
     bits := append(d.bits, bit)
     d.encoding.last = &bit
     if len(bits) == cap(d.bits) {
         if encoding.start != nil {
             if bits[0].Raw != encoding.start.Raw {
-                err := NewError("Start bit is wrong")
+                err := NewError("[BYTE] Start bit is wrong")
                 fmt.Println(err)
                 return err
             }
@@ -103,16 +103,14 @@ func (d *byteDecoder) Consume(bit Bit) error {
         
         if encoding.stop != nil {
             if bit.Raw != encoding.stop.Raw {
-                err := NewError("Stop bit is wrong")
+                err := NewError("[BYTE] Stop bit is wrong")
                 fmt.Println(err)
                 return err
             }
             bits = bits[:len(bits)]
         }
         
-        // FIX index
         b := ByteFromBits(bits)
-        fmt.Printf(" = %d [%b] \n", b, b)
         d.complete()
         d.consumer.Consume(b)
     } else {

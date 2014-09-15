@@ -51,11 +51,12 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
             delta := time.Duration(bit.Timestamp.UnixNano() - pattern.Last.Timestamp.UnixNano()) 
             switch bit.CompareTimeoutToLast(pattern.Timeout, *pattern.Last) {
             case uvr.OrderedAscending:
-                fmt.Printf("Bit arrived too early %v", delta)
+                fmt.Printf("[SYNC] Bit arrived too early (%v)\n", delta)
                 return nil
             case uvr.OrderedDescending:
                 s.Reset()
-                return uvr.NewErrorf("Bit arrived too late %v", delta)
+                err := uvr.NewErrorf("[SYNC] Bit arrived too late (%v)", delta)
+                return err
             case uvr.OrderedSame:
             }
         }
@@ -68,7 +69,7 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
                     s.syncConsumer.SyncDone(bit.Timestamp)
                 }
                 s.synced = true
-                fmt.Println("Synced")
+                fmt.Println("[SYNC] Done")
             }
         } else {
             s.Reset()

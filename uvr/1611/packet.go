@@ -153,11 +153,11 @@ func (d *packetDecoder) Reset() {
 func (d *packetDecoder) Consume(b uvr.Byte) error {
     bytes := append(d.bytes, b)
     if len(bytes) == cap(d.bytes) {
-        fmt.Printf("%v\n", bytes)
+        // fmt.Printf("%v\n", bytes)
         d.Reset()
         packet, err := PacketFromBytes(bytes)
         if err != nil {
-            fmt.Println("Could not parse packet bytes.", err)
+            fmt.Println("[PACKET] Could not parse packet bytes.", err)
         } else {
             d.consumer.Consume(packet)
         }
