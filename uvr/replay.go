@@ -6,6 +6,8 @@ import(
     "bufio"
     "bytes"
 )
+
+// Replays a bit log file
 type replayer struct {
     consumer BitConsumer
 }
@@ -50,6 +52,7 @@ func (r *replayer) ReadLines(filePath string) ([]string, error) {
     return lines, err
 }
 
+// Starts replaying a bit log file
 func (r *replayer) Replay(filePath string) (error) {
     lines, err := r.ReadLines(filePath)
     

@@ -1,6 +1,6 @@
 package uvr
 
-
+// Logs and hands over bit stream to next bit consumer
 type handover struct {
     consumer BitConsumer
     logger Logger

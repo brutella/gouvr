@@ -8,11 +8,9 @@ This project provides a boilerplate to read data from the data bus of device man
 - HRZ 65  
 - EEG 30  
 - TFM 66  
-- UVR 1611
+- [UVR 1611][UVR1611-Website] available under `uvr/1611`
 - UVR 61-3
 - ESR 21  
-
-Currently there is an implementation for the [UVR1611][UVR1611-Website] under `uvr/1611`.
 
 ## TODO
 

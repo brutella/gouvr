@@ -1,5 +1,6 @@
 package uvr
 
+// Packet encoding indicates the number of bytes required for a packet
 type packetEncoding struct {
     count int
 }
@@ -21,10 +22,6 @@ func NewPacketDecoder(consumer PacketConsumer, byte_count int) *packetDecoder {
     return d
 }
 
-func (d *packetDecoder) resetBytes() {
-    d.bytes = make([]Byte, 0, cap(d.bytes))
-}
-
 func (d *packetDecoder) Reset() {
     d.resetBytes()
 }
@@ -39,4 +36,8 @@ func (d *packetDecoder) Consume(b Byte) error {
     }
     
     return nil
+}
+
+func (d *packetDecoder) resetBytes() {
+    d.bytes = make([]Byte, 0, cap(d.bytes))
 }

@@ -4,6 +4,7 @@ import (
 	"testing"
     "github.com/stretchr/testify/assert"
     "time"
+    "math/big"
 )
 
 func Microseconds(t time.Time) int64 {
@@ -26,4 +27,34 @@ func TestLogStringFromBit(t *testing.T) {
     
     // Only test milliseconds
     assert.Equal(t, Milliseconds(bit.Timestamp), Milliseconds(restored_bit.Timestamp))
+}
+
+func TestBitsWithinTimeout(t *testing.T) {
+    bit1 := Bit{Raw:big.Word(1), Timestamp:time.Unix(0, 1001)}
+    bit2 := Bit{Raw:big.Word(0), Timestamp:time.Unix(0, 1002)}
+    
+    timeout := Timeout{duration:time.Duration(1), deviation:0}
+    // time difference is 1002 - 1001 = 1
+    // valid timeout = +/-1
+    assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedSame)
+}
+
+func TestBitsWithinTimeout2(t *testing.T) {
+    bit1 := Bit{Raw:big.Word(1), Timestamp:time.Unix(0, 1001)}
+    bit2 := Bit{Raw:big.Word(0), Timestamp:time.Unix(0, 1003)}
+    
+    timeout := Timeout{duration:time.Duration(1), deviation:1}
+    // time difference is 1003 - 1001 = 2
+    // valid timeout = +/-2
+    assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedSame)
+}
+
+func TestBitsOutOfTimeout(t *testing.T) {
+    bit1 := Bit{Raw:big.Word(1), Timestamp:time.Unix(0, 1001)}
+    bit2 := Bit{Raw:big.Word(0), Timestamp:time.Unix(0, 1003)}
+    
+    timeout := Timeout{duration:time.Duration(1), deviation:0}
+    // time difference is 1003 - 1001 = 2
+    // valid timeout = +/-1
+    assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedDescending)
 }

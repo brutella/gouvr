@@ -8,33 +8,30 @@ import (
     "errors"
 )
 
+// A bit encapsulates a value and timestamp
 type Bit struct {
-    Raw big.Word
-    Timestamp time.Time
+    Raw big.Word // 1 or 0
+    Timestamp time.Time // nanoseconds
 }
 
+// Creates a bit with a specific value and current timestamp
 func NewBitFromWord(value big.Word) Bit {
     return Bit{Raw: value, Timestamp: time.Now()}
 }
 
-func NewTimeForUnixNano(unixNano time.Duration) time.Time {
-    seconds_f := float64(unixNano)/float64(time.Second)
-    seconds_int := float64(int64(seconds_f))
-    nanoseconds_int := (seconds_f - seconds_int) * float64(time.Second)        
-    return time.Unix(int64(seconds_int), int64(nanoseconds_int))
-}
-
+// Returns the time difference between bits
 func (b Bit) Since(bit Bit) time.Duration {
     return time.Duration(b.Timestamp.UnixNano() - bit.Timestamp.UnixNano())
 }
 
 type ComparisonResult int
 const(
-    OrderedAscending    = iota
-    OrderedSame         = iota
-    OrderedDescending   = iota
+    OrderedAscending    = iota // a < b
+    OrderedSame         = iota // a = b
+    OrderedDescending   = iota // a > b
 )
 
+// Compares the time difference between bits based on a timeout
 func (b Bit) CompareTimeoutToLast(timeout Timeout, last Bit) ComparisonResult {
     elapsed := b.Since(last)
     if timeout.min() > elapsed {
@@ -46,11 +43,9 @@ func (b Bit) CompareTimeoutToLast(timeout Timeout, last Bit) ComparisonResult {
     return OrderedSame
 }
 
-/** Create a bit from a log string
-    
-    The timestamp might be off by some nanoseconds
-    due to problem converting string to int64.
-*/
+// Create a bit from a log string
+// 
+// The timestamp might be off by some nanoseconds due to problem converting string to int64.
 func BitFromLogString(str string) (Bit, error) {
     var bit Bit
     var err error
@@ -60,12 +55,9 @@ func BitFromLogString(str string) (Bit, error) {
         timestamp_str := fields[0]
         raw_str := fields[1]
         
-        timestamp, _ := strconv.ParseInt(timestamp_str, 10, 64)
         raw, _ := strconv.Atoi(raw_str)
-        seconds_f := float64(timestamp)/float64(time.Second)
-        seconds_int := float64(int64(seconds_f))
-        nanoseconds_int := (seconds_f - seconds_int) * float64(time.Second)        
-        bit = Bit{Raw: big.Word(raw), Timestamp: time.Unix(int64(seconds_int), int64(nanoseconds_int))}
+        timestamp_nano, _ := strconv.ParseInt(timestamp_str, 10, 64)
+        bit = Bit{Raw: big.Word(raw), Timestamp: NewTimeForUnixNano(time.Duration(timestamp_nano))}
     default:
         err = errors.New("Could not create bit from " + str)
     }
@@ -73,10 +65,10 @@ func BitFromLogString(str string) (Bit, error) {
     return bit, err
 }
 
-/** Creates a log string for a bit in the following format-
-    
-    {nanoseconds} {1|0}
-*/
+// Creates a log string for a bit in the following format-
+// 
+// {nanoseconds} {1|0}
+// ...
 func LogString(b Bit) string {
     nanoSeconds := strconv.FormatInt(b.Timestamp.UnixNano(), 10)
     switch b.Raw {

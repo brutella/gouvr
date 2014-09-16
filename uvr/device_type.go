@@ -36,5 +36,5 @@ func DeviceTypeToString(deviceType DeviceType) string {
         return "ESR 21"        
     }
     
-    return "Unkown"
+    return "Unknown"
 }

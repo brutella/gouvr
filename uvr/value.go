@@ -1,5 +1,6 @@
 package uvr
 
+// A value constists of 2 bytes
 type Value struct {
     Low Byte
     High Byte
@@ -16,6 +17,7 @@ func Int16FromValue(value Value) int16 {
     return (int16(value.High << 8) | int16(value.Low))
 }
 
+// A big value consists of 2 values (= 4 bytes)
 type BigValue struct {
     Low Value
     High Value

@@ -4,6 +4,7 @@ import(
     "math/big"
 )
 
+// Creates bit (w/ timestamp) stream out of a "raw" bit stream
 type signal struct {
     WordConsumer
     consumer BitConsumer

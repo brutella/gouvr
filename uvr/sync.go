@@ -6,14 +6,8 @@ import (
     "time"
 )
 
-type SyncPattern struct {
-    I int
-    Count int
-    Value big.Word
-    Timeout Timeout
-    Last *Bit
-}
-
+// Decodes a bit stream to synchronize the communication
+// The sync pattern is 8 high bits after a specific timeout
 type syncDecoder struct {
     BitConsumer
     bitConsumer BitConsumer

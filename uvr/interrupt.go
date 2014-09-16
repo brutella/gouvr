@@ -5,6 +5,7 @@ import (
     _"time"
 )
 
+// Forwards only edge changes from a bit stream to a bit consumer similar to an interrupt
 type edgeInterrupt struct {
     BitConsumer
     consumer BitConsumer

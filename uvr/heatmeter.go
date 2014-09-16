@@ -27,6 +27,8 @@ func NewHeatMeterValue(bytes []Byte) HeatMeterValue {
 }
 
 func (h *HeatMeterValue) ToString() string {
+    // TODO
+    // Decode bytes correctly based on specification
     current_kW := Int32FromBigValue(h.currentPower_kW)/100
     power_kWh := Int16FromValue(h.power_kWh)/10
     power_MWh := Int16FromValue(h.power_MWh)/10
