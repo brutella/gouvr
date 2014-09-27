@@ -18,7 +18,7 @@ type Timestamp struct {
     Zu bemerken ist, dass die akt. Uhrzeit auf den niederwertigen 5 Bits ausgegeben wird.
 */
 func NewTimestamp(bytes []Byte) Timestamp {
-    daylightSavings := bytes[2] & 0x20  == 0x20 // 0001 0000
+    daylightSavings := bytes[1] & 0x20  == 0x20 // 0010 0000
     hour := bytes[1] & 0x1F // 0001 1111
     return Timestamp{
         daylightSavings: daylightSavings,

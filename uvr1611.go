@@ -1,8 +1,12 @@
 package main
 import (
     "gouvr/uvr"
+    "gouvr/uvr/1611"
     "fmt"
     "math/big"
+    "time"
+    "os"
+    "os/signal"
     "github.com/kidoman/embd"
     _"github.com/kidoman/embd/host/bbb"
 )
@@ -41,14 +45,33 @@ func main() {
     defer pin.Close()
     defer embd.CloseGPIO()
     
-    packetReceiver  := uvr.NewPacketReceiver()
-    packetDecoder   := uvr.NewPacketDecoder(packetReceiver)
-    byteDecoder     := uvr.NewByteDecoder(packetDecoder, uvr.NewTimeout(488.0, 0.2))
-    syncDecoder     := uvr.NewSyncDecoder(byteDecoder, byteDecoder, uvr.NewTimeout(488.0*2, 0.3))
-    signal          := uvr.Signal(syncDecoder)
+    packetReceiver  := uvr1611.NewPacketReceiver()
+    packetDecoder   := uvr1611.NewPacketDecoder(packetReceiver)
+    byteDecoder     := uvr.NewByteDecoder(packetDecoder, uvr.NewTimeout(488.0, 0.4))
+    syncDecoder     := uvr1611.NewSyncDecoder(byteDecoder, byteDecoder, uvr.NewTimeout(488.0*2, 0.4))
+    signal          := uvr.NewSignal(syncDecoder)
     
-    packetReceiver.RegisterCallback(func(packet uvr.Packet) {
-        packet.Log()
+    packetReceiver.RegisterCallback(func(packet uvr1611.Packet) {
+        /*
+        (Aussentemperatur)
+        (Fussbodenheizung Vorlauf)
+        (Buffer Warmwasser - Oben)
+        (Buffer Warmwasser - Mitte)
+        (Buffer Warmwasser - Unten)
+        (Raumtemperatur)
+        (Wärmetauscher Sekundär)
+        */
+        fmt.Println(time.Now().Format(time.Stamp))
+        fmt.Println("Zeit:", packet.Timestamp.ToString())
+        fmt.Println("Aussentemperatur:", uvr1611.InputValueToString(packet.Input1))
+        fmt.Println("Fussbodenheizung Vorlauf:", uvr1611.InputValueToString(packet.Input2))
+        fmt.Println("Buffer Warmwasser")
+        fmt.Println("   Oben:", uvr1611.InputValueToString(packet.Input3))
+        fmt.Println("   Mitte:", uvr1611.InputValueToString(packet.Input4))
+        fmt.Println("   Unten:", uvr1611.InputValueToString(packet.Input5))
+        fmt.Println("Raumtemperatur:", uvr1611.InputValueToString(packet.Input6))
+        fmt.Println("Wärmetauscher Sekundär:", uvr1611.InputValueToString(packet.Input7))
+        // packet.Log()
         syncDecoder.Reset()
         byteDecoder.Reset()
         packetDecoder.Reset()
@@ -62,7 +85,7 @@ func main() {
             signal.Consume(big.Word(value))
         }
     })
-    
+     
     if err != nil {
 	    fmt.Println("Could not watch pin.", err)
     }

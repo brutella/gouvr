@@ -1,7 +1,7 @@
 package uvr1611
 
 import (
-    "fmt"
+    _"fmt"
     "time"
     "math/big"
     "gouvr/uvr"
@@ -51,7 +51,7 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
             delta := time.Duration(bit.Timestamp.UnixNano() - pattern.Last.Timestamp.UnixNano()) 
             switch bit.CompareTimeoutToLast(pattern.Timeout, *pattern.Last) {
             case uvr.OrderedAscending:
-                fmt.Printf("[SYNC] Bit arrived too early (%v)\n", delta)
+                // fmt.Printf("[SYNC] Bit arrived too early (%v)\n", delta)
                 return nil
             case uvr.OrderedDescending:
                 s.Reset()
@@ -69,7 +69,7 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
                     s.syncObserver.SyncDone(bit.Timestamp)
                 }
                 s.synced = true
-                fmt.Println("[SYNC] Done")
+                // fmt.Println("[SYNC] Done")
             }
         } else {
             s.Reset()

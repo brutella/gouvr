@@ -80,7 +80,7 @@ func (d *byteDecoder) Consume(bit Bit) error {
             return nil // ignore
         case OrderedDescending:
             err := NewErrorf("[BYTE] Bit arrived too late %v", delta)
-            fmt.Println(err)
+            // fmt.Println(err)
             return err
         case OrderedSame:
             

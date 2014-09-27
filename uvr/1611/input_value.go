@@ -9,6 +9,7 @@ func InputTypeFromValue(value uvr.Value) InputType {
     return InputType(value.High & InputTypeMask)
 }
 
+// Returns the input type and value
 func DecodeInputValue(value uvr.Value) (InputType, float32) {
     input_type := InputTypeFromValue(value)
     
