@@ -1,6 +1,6 @@
 # GOUVR
 
-This project provides a boilerplate to read data from the data bus of device manufactured by TA (Technische Alternative)
+This project provides a boilerplate to read data from the data bus from devices manufactured by TA (Technische Alternative)
 
 - UVR 31  
 - UVR 42  
