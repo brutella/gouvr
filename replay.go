@@ -1,7 +1,7 @@
 package main
 import (
-    "gouvr/uvr"
-    "gouvr/uvr/1611"
+    "github.com/brutella/gouvr/uvr"
+    "github.com/brutella/gouvr/uvr/1611"
     "fmt"
 )
 

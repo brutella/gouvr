@@ -4,7 +4,7 @@ import (
     _"fmt"
     "time"
     "math/big"
-    "gouvr/uvr"
+    "github.com/brutella/gouvr/uvr"
 )
 
 type syncDecoder struct {

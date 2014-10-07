@@ -3,7 +3,7 @@ package uvr1611
 import (
 	"testing"
     "github.com/stretchr/testify/assert"
-    "gouvr/uvr"
+    "github.com/brutella/gouvr/uvr"
 )
 
 func TestTemperatureFromValue(t *testing.T) {

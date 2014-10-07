@@ -1,7 +1,7 @@
 package uvr1611
 
 import(
-    "gouvr/uvr"
+    "github.com/brutella/gouvr/uvr"
 )
 
 const (

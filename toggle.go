@@ -1,7 +1,7 @@
 package main
 
 import(
-    "gouvr/uvr"
+    "github.com/brutella/gouvr/uvr"
     "github.com/kidoman/embd"
     _"github.com/kidoman/embd/host/bbb"
     "os"
