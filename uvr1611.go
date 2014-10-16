@@ -1,12 +1,15 @@
+// Writes the GPIO pin values into the pipeline and logs packets to the console
 package main
+
 import (
-    "github.com/brutella/gouvr/uvr"
-    "github.com/brutella/gouvr/uvr/1611"
     "fmt"
     "math/big"
     "time"
     "os"
     "os/signal"
+    
+    "github.com/brutella/gouvr/uvr"
+    "github.com/brutella/gouvr/uvr/1611"
     "github.com/kidoman/embd"
     _"github.com/kidoman/embd/host/bbb"
 )

@@ -1,14 +1,15 @@
+// Writes the output of a GPIO pin to a file
 package main
 
 import(
+    "os"
+    "os/signal"
+    "fmt"
+    "math/big"
+    
     "github.com/brutella/gouvr/uvr"
     "github.com/kidoman/embd"
     _"github.com/kidoman/embd/host/bbb"
-    "os"
-    "os/signal"
-    _"time"
-    "fmt"
-    "math/big"
 )
 
 func Init(file string) (embd.DigitalPin, error) {
