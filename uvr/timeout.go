@@ -9,6 +9,10 @@ type Timeout struct {
     deviation float64 // valid deviation (+/-) of a timeout between 0 and 1 (=100%) of the timeout duration
 }
 
+// Creates a new timeout for a frequency and deviation
+// The frequency is in hertz
+// The deviation is in percentage between [0;1]
+// Example: When frequency is 2, the timeout will be 500 milliseconds +/- deviation
 func NewTimeout(frequency time.Duration, deviation float64) Timeout {
     t := Timeout{}
     t.duration = time.Duration(time.Second/frequency)
