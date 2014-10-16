@@ -5,13 +5,6 @@ import (
     "github.com/stretchr/testify/assert"
 )
 
-/*
-    minute  Byte
-    hour    Byte
-    day     Byte
-    month   Byte
-    year    Byte // since 2000, e.g. 3 == 2003
-*/
 func TestTimestampToString(t *testing.T) {
     bytes := []Byte{
         Byte(45), // min

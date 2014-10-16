@@ -13,10 +13,8 @@ type Timestamp struct {
     year    Byte // since 2000, e.g. 3 == 2003
 }
 
-/** Documentation
-    Die Sommerzeit wird durch das Bit 5 im Stunden-Byte gekennzeichnet (bei Sommerzeit ist dieses Bit = 1).
-    Zu bemerken ist, dass die akt. Uhrzeit auf den niederwertigen 5 Bits ausgegeben wird.
-*/
+// The 5th bit of the hour byte indicates a daylight saving time (1 = daylight saving)
+// Bit 0-4 of the hour byte contain the actual value
 func NewTimestamp(bytes []Byte) Timestamp {
     daylightSavings := bytes[1] & 0x20  == 0x20 // 0010 0000
     hour := bytes[1] & 0x1F // 0001 1111
