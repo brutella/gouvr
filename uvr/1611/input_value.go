@@ -5,11 +5,12 @@ import(
     "fmt"
 )
 
+// Returns the input type of the value.
 func InputTypeFromValue(value uvr.Value) InputType {
     return InputType(value.High & InputTypeMask)
 }
 
-// Returns the input type and value
+// Returns the input type and the float value.
 func DecodeInputValue(value uvr.Value) (InputType, float32) {
     input_type := InputTypeFromValue(value)
     
@@ -40,6 +41,7 @@ func DecodeInputValue(value uvr.Value) (InputType, float32) {
     return input_type, result/10.0
 }
 
+// Returns the value properly formatted as string (e.g. 10.5 °C).
 func InputValueToString(v uvr.Value) string {
     input_type, value := DecodeInputValue(v)
     

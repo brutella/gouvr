@@ -12,6 +12,8 @@ type packetDecoder struct {
     bytes []uvr.Byte
 }
 
+// Returns a new packet decoder, which implements the ByteConsumer interface.
+// The decoder calls the Consume() method of the specified packet consumer when new packets were decoded
 func NewPacketDecoder(consumer PacketConsumer) *packetDecoder {
     d := &packetDecoder{consumer: consumer}
     d.bytes = make([]uvr.Byte, 0, PacketByteCount)
@@ -19,6 +21,7 @@ func NewPacketDecoder(consumer PacketConsumer) *packetDecoder {
     return d
 }
 
+// Resets the cached bytes.
 func (d *packetDecoder) Reset() {
     d.bytes = make([]uvr.Byte, 0, cap(d.bytes))
 }

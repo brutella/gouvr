@@ -15,6 +15,9 @@ type syncDecoder struct {
     pattern uvr.SyncPattern
 }
 
+// Returns a new sync decoder, which implements the BitConsumer interface.
+// The decoder syncs the transmission on 32 consecutive high bits.
+// After successful sync, the SyncDone() of the observer is called and the consumed bits are passed through to the specified bit consumer.
 func NewSyncDecoder(bitConsumer uvr.BitConsumer, syncObserver uvr.SyncObserver, t uvr.Timeout) *syncDecoder {
     d := &syncDecoder{bitConsumer: bitConsumer, syncObserver: syncObserver}
     
@@ -26,6 +29,8 @@ func NewSyncDecoder(bitConsumer uvr.BitConsumer, syncObserver uvr.SyncObserver, 
     return d
 }
 
+// Resets the cached bits and calls Reset() on the bitConsumer.
+// After reset the decoder syncs the transmission again.
 func (s *syncDecoder) Reset() {
     s.bitConsumer.Reset()
     s.resetBits()

@@ -8,6 +8,7 @@ import (
 
 const PacketByteCount = 64
 
+// The struct for an UVR1611 packet.
 type Packet struct {                   // Bytes
     DeviceType uvr.DeviceType          // 1
     DeviceTypeInverted uvr.DeviceType  // 2
@@ -40,6 +41,7 @@ type Packet struct {                   // Bytes
     Checksum uvr.Byte                  // 64
 }
 
+// Logs the packet to console.
 func (p *Packet) Log() {
     fmt.Println("Device:", uvr.DeviceTypeToString(p.DeviceType))
     fmt.Println("Time:", p.Timestamp.ToString())
@@ -69,7 +71,7 @@ func (p *Packet) Log() {
     fmt.Println("Heat Meter 2:", p.HeatMeter2.ToString())
 }
 
-// Returns the sum of all bytes modulo 256
+// Returns the sum of all bytes modulo 256.
 func ChecksumFromBytes(bytes []uvr.Byte) uvr.Byte {
     var checksum uvr.Byte
     
@@ -80,7 +82,7 @@ func ChecksumFromBytes(bytes []uvr.Byte) uvr.Byte {
     return checksum
 }
 
-// Returns a uvr1611 packet from a list of bytes or an error
+// Returns a uvr1611 packet from a list of bytes or an error.
 func PacketFromBytes(bytes []uvr.Byte) (Packet, error){
     var err error
     var packet = Packet{}

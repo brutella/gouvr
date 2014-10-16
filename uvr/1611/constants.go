@@ -8,7 +8,7 @@ const (
     SignalFrequency = 488
 )
 
-// Masks
+// Input types
 const(
     InputTypeMask                         = 0x70 // 0111 0000
     InputTypeHighValueMask                = 0x0F // 0000 1111
