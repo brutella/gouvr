@@ -3,19 +3,19 @@ package uvr
 type DeviceType Byte
 
 const(
-    DeviceTypeUVR31     = 0x30
-    DeviceTypeUVR42     = 0x10
-    DeviceTypeUVR64     = 0x20
-    DeviceTypeHRZ65     = 0x60
-    DeviceTypeEEG30     = 0x50
-    DeviceTypeTFM66     = 0x40
-    DeviceTypeUVR1611   = 0x80
-    DeviceTypeUVR61_3   = 0x90
-    DeviceTypeESR21     = 0x70
+    DeviceTypeUVR31     = DeviceType(0x30)
+    DeviceTypeUVR42     = DeviceType(0x10)
+    DeviceTypeUVR64     = DeviceType(0x20)
+    DeviceTypeHRZ65     = DeviceType(0x60)
+    DeviceTypeEEG30     = DeviceType(0x50)
+    DeviceTypeTFM66     = DeviceType(0x40)
+    DeviceTypeUVR1611   = DeviceType(0x80)
+    DeviceTypeUVR61_3   = DeviceType(0x90)
+    DeviceTypeESR21     = DeviceType(0x70)
 )
 
 func DeviceTypeToString(deviceType DeviceType) string {
-    switch uint8(deviceType) {
+    switch deviceType {
     case DeviceTypeUVR31:
         return "UVR 31"
     case DeviceTypeUVR42:

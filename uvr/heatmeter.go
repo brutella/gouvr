@@ -13,9 +13,9 @@ func NewHeatMeterRegister(value Byte) HeatMeterRegister {
 }
 
 type HeatMeterValue struct {
-    currentPower_kW BigValue // 0, 1, 2, 3
-    power_kWh Value // 4, 5
-    power_MWh Value // 6, 7
+    currentPower_kW BigValue
+    power_kWh Value
+    power_MWh Value
 }
 
 func NewHeatMeterValue(bytes []Byte) HeatMeterValue {

@@ -67,7 +67,6 @@ func (d *byteDecoder) complete() {
 }
 
 func (d *byteDecoder) SyncDone(t time.Time) {
-    // d.encoding.last = &Bit{Raw:0, Timestamp:t}
 }
     
 func (d *byteDecoder) Consume(bit Bit) error {
@@ -76,18 +75,14 @@ func (d *byteDecoder) Consume(bit Bit) error {
         delta := time.Duration(bit.Timestamp.UnixNano() - encoding.last.Timestamp.UnixNano()) 
         switch bit.CompareTimeoutToLast(encoding.timeout, *encoding.last) {
         case OrderedAscending:
-            // fmt.Print("[", bit.Raw,"]")
             return nil // ignore
         case OrderedDescending:
             err := NewErrorf("[BYTE] Bit arrived too late %v", delta)
-            // fmt.Println(err)
             return err
         case OrderedSame:
             
         }
     }
-    
-    // fmt.Print(bit.Raw)
     
     bits := append(d.bits, bit)
     d.encoding.last = &bit

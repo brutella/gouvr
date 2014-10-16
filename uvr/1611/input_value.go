@@ -18,7 +18,7 @@ func DecodeInputValue(value uvr.Value) (InputType, float32) {
     var high_byte = uvr.Byte(0)
     if input_type != InputTypeUnused {
         low_byte = value.Low & InputTypeLowValueMask
-        // Room temperature input is handled differenctly
+        // Room temperature input is handled differently
         if input_type == InputTypeRoomTemperature {
             high_byte = value.High & InputTypeRoomTemperatureHighValueMask
         } else {

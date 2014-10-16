@@ -8,36 +8,36 @@ import (
 
 const PacketByteCount = 64
 
-type Packet struct {
-    DeviceType uvr.DeviceType           // 1
-    DeviceTypeInverted uvr.DeviceType   // 2
-    Unkown uvr.Byte                     // 3
-    Timestamp uvr.Timestamp             // 4, 5, 6, 7, 8
-    Input1 uvr.Value        // 9, 10  (Aussentemperatur)
-    Input2 uvr.Value        // 11, 12 (Fussbodenheizung Vorlauf)
-    Input3 uvr.Value        // 13, 14 (Buffer Warmwasser - Oben)
-    Input4 uvr.Value        // 15, 16 (Buffer Warmwasser - Mitte)
-    Input5 uvr.Value        // 17, 18 (Buffer Warmwasser - Unten)
-    Input6 uvr.Value        // 19, 20 (Raumtemperatur)
-    Input7 uvr.Value        // 21, 22 (Wärmetauscher Sekundär)
-    Input8 uvr.Value        // 23, 24
-    Input9 uvr.Value        // 25, 26
-    Input10 uvr.Value       // 27, 28
-    Input11 uvr.Value       // 29, 30
-    Input12 uvr.Value       // 31, 32
-    Input13 uvr.Value       // 33, 34
-    Input14 uvr.Value       // 35, 36
-    Input15 uvr.Value       // 37, 38
-    Input16 uvr.Value       // 39, 40
-    Outgoing uvr.Value      // 41, 42
-    SpeedStepA1 uvr.Byte    // 43
-    SpeedStepA2 uvr.Byte    // 44
-    SpeedStepA6 uvr.Byte    // 45
-    SpeedStepA7 uvr.Byte    // 46
+type Packet struct {                   // Bytes
+    DeviceType uvr.DeviceType          // 1
+    DeviceTypeInverted uvr.DeviceType  // 2
+    Unkown uvr.Byte                    // 3
+    Timestamp uvr.Timestamp            // 4, 5, 6, 7, 8
+    Input1 uvr.Value                   // 9, 10 
+    Input2 uvr.Value                   // 11, 12
+    Input3 uvr.Value                   // 13, 14
+    Input4 uvr.Value                   // 15, 16
+    Input5 uvr.Value                   // 17, 18
+    Input6 uvr.Value                   // 19, 20
+    Input7 uvr.Value                   // 21, 22
+    Input8 uvr.Value                   // 23, 24
+    Input9 uvr.Value                   // 25, 26
+    Input10 uvr.Value                  // 27, 28
+    Input11 uvr.Value                  // 29, 30
+    Input12 uvr.Value                  // 31, 32
+    Input13 uvr.Value                  // 33, 34
+    Input14 uvr.Value                  // 35, 36
+    Input15 uvr.Value                  // 37, 38
+    Input16 uvr.Value                  // 39, 40
+    Outgoing uvr.Value                 // 41, 42
+    SpeedStepA1 uvr.Byte               // 43
+    SpeedStepA2 uvr.Byte               // 44
+    SpeedStepA6 uvr.Byte               // 45
+    SpeedStepA7 uvr.Byte               // 46
     HeatRegister uvr.HeatMeterRegister // 47
-    HeatMeter1 uvr.HeatMeterValue // 48, 49, 50, 51 | 52, 53 | 54, 55
-    HeatMeter2 uvr.HeatMeterValue // 56, 57, 58, 59 | 60, 61 | 62, 63
-    Checksum uvr.Byte       // 64
+    HeatMeter1 uvr.HeatMeterValue      // 48, 49, 50, 51 | 52, 53 | 54, 55
+    HeatMeter2 uvr.HeatMeterValue      // 56, 57, 58, 59 | 60, 61 | 62, 63
+    Checksum uvr.Byte                  // 64
 }
 
 func (p *Packet) Log() {
