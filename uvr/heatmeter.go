@@ -26,12 +26,19 @@ func NewHeatMeterValue(bytes []Byte) HeatMeterValue {
     }
 }
 
+func (h *HeatMeterValue) CurrentPower() float32 {
+    value  := h.currentPower_kW
+    i := int32(value.High.High) << 16 | int32(value.High.Low) << 8 | int32(value.Low.High)
+    f := float32(i) + float32(value.Low.Low) * 10.0/256.0
+    return f/100
+}
+
 func (h *HeatMeterValue) ToString() string {
     // TODO
     // Decode bytes correctly based on specification
-    current_kW := Int32FromBigValue(h.currentPower_kW)/100
+    current_kW := h.CurrentPower()
     power_kWh := Int16FromValue(h.power_kWh)/10
-    power_MWh := Int16FromValue(h.power_MWh)/10
+    power_MWh := Int16FromValue(h.power_MWh)
     
-    return fmt.Sprintf("Current %d kW | %d kWh | %d MWh", current_kW, power_kWh, power_MWh)
+    return fmt.Sprintf("Current %f kW | %d kWh | %d MWh", current_kW, power_kWh, power_MWh)
 }
