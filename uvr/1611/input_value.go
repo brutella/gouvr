@@ -10,9 +10,22 @@ func IsUnusedInputValue(value uvr.Value) bool {
     return InputTypeFromValue(value) == InputTypeUnused
 }
 
+func RoomTemperatureModeFromValue(value uvr.Value) RoomTemperatureMode {
+    if InputTypeFromValue(value) == InputTypeRoomTemperature {
+        return RoomTemperatureMode(value.High & InputTypeRoomTemperatureOperationModeMask)
+    }
+    
+    return RoomTemperatureModeUndefined
+}
+
 // InputTypeFromValue returns the input type of the value.
 func InputTypeFromValue(value uvr.Value) InputType {
     return InputType(value.High & InputTypeMask)
+}
+
+func IsDigitalInputValueOn(value uvr.Value) bool {
+    input_type, f := DecodeInputValue(value)
+    return input_type == InputTypeDigital && f == 1.0
 }
 
 // DecodeInputValue returns the input type and the float value.
@@ -33,18 +46,30 @@ func DecodeInputValue(value uvr.Value) (InputType, float32) {
             high_byte = value.High & InputTypeHighValueMask
         }
         
-        if high_byte & 0x80 == 0x80 { // 1000 0000
-            // For negative values, set bit 4,5,6 in high byte to 1
-            high_byte |= 0x70 // 0111 0000
-            result = float32(low_byte) + float32(high_byte) * 256 - 65536
+        if value.High & InputTypeSignMask == InputTypeSignMask { // 1000 0000
+            if input_type == InputTypeDigital {
+                // bit 7 = 1 (On)
+                result = 1.0
+            } else {
+                // For negative values, set bit 4,5,6 in high byte to 1
+                high_byte |= 0x70 // 0111 0000
+                result = float32(low_byte) + float32(high_byte) * 256 - 65536
+                result /= 10.0
+            }
         } else {
-            // For positive values, set bit 4,5,6 in high byte to 0
-            high_byte &= 0x0F // 0000 1111
-            result = float32(low_byte) + float32(high_byte) * 256
+            if input_type == InputTypeDigital {
+                // bit 7 = 0 (Off)
+                result = 0.0
+            } else {
+                // For positive values, set bit 4,5,6 in high byte to 0
+                high_byte &= 0x0F // 0000 1111
+                result = float32(low_byte) + float32(high_byte) * 256
+                result /= 10.0
+            }
         }
     }
     
-    return input_type, result/10.0
+    return input_type, result
 }
 
 // InputValueToString returns the value properly formatted as string (e.g. 10.5 °C).
@@ -56,9 +81,23 @@ func InputValueToString(v uvr.Value) string {
     case InputTypeUnused:
         return "?"
     case InputTypeDigital:
-        suffix = ""
+        if value == 1.0 {
+            return "On"
+        }
+        return "Off"
     case InputTypeRoomTemperature:
-        fallthrough
+        suffix = "°C"
+        suffix += " "
+        switch RoomTemperatureModeFromValue(v) {
+        case RoomTemperatureModeAutomatic:
+            suffix += "[Auto]" 
+        case RoomTemperatureModeNormal:
+            suffix += "[Normal]"
+        case RoomTemperatureModeLowering: 
+            suffix += "[Lowering]"
+        case RoomTemperatureModeStandby:
+            suffix += "[Standby]"
+        }
     case InputTypeTemperature:
         suffix = "°C"
     case InputTypeVolumeFlow:

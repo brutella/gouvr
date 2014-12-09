@@ -10,6 +10,7 @@ const (
 
 // Input types
 const(
+    InputTypeSignMask                     = 0x90 // 1000 0000
     InputTypeMask                         = 0x70 // 0111 0000
     InputTypeHighValueMask                = 0x0F // 0000 1111
     InputTypeLowValueMask                 = 0xFF // 1111 1111
@@ -30,9 +31,11 @@ const (
 )
 
 // Room Temperature Operation Mode
+type RoomTemperatureMode uvr.Byte
 const (
-    RoomTemperatureModeAutomatic = 0x00 // 0000 0000
-    RoomTemperatureModeNormal    = 0x02 // 0000 0010
-    RoomTemperatureModeLowering  = 0x04 // 0000 0100
-    RoomTemperatureModeStandby   = 0x06 // 0000 0110
+    RoomTemperatureModeUndefined = RoomTemperatureMode(0xFF)
+    RoomTemperatureModeAutomatic = RoomTemperatureMode(0x00) // 0000 0000
+    RoomTemperatureModeNormal    = RoomTemperatureMode(0x02) // 0000 0010
+    RoomTemperatureModeLowering  = RoomTemperatureMode(0x04) // 0000 0100
+    RoomTemperatureModeStandby   = RoomTemperatureMode(0x06) // 0000 0110
 )
