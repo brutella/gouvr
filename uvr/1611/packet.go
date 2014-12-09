@@ -67,9 +67,15 @@ func (p *Packet) Log() {
     fmt.Println("A2:", uvr.NewSpeedStep(p.SpeedStepA2).ToString())
     fmt.Println("A6:", uvr.NewSpeedStep(p.SpeedStepA6).ToString())
     fmt.Println("A7:", uvr.NewSpeedStep(p.SpeedStepA7).ToString())
-    fmt.Println("Heat Register:", p.HeatRegister)
-    fmt.Println("Heat Meter 1:", p.HeatMeter1.ToString())
-    fmt.Println("Heat Meter 2:", p.HeatMeter2.ToString())
+        
+    h1, h2 := AreHeatMetersEnabled(p.HeatRegister)
+    if h1 == true {
+        fmt.Println("Heat Meter 1:", p.HeatMeter1.ToString())
+    }
+    
+    if h2 == true {
+        fmt.Println("Heat Meter 2:", p.HeatMeter2.ToString())
+    }
 }
 
 // Returns the sum of all bytes modulo 256.

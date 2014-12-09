@@ -5,11 +5,11 @@ import(
 )
 
 type HeatMeterRegister struct {
-    value Byte
+    Value Byte
 }
 
 func NewHeatMeterRegister(value Byte) HeatMeterRegister {
-    return HeatMeterRegister{ value: value }
+    return HeatMeterRegister{ Value: value }
 }
 
 type HeatMeterValue struct {
@@ -37,8 +37,8 @@ func (h *HeatMeterValue) ToString() string {
     // TODO
     // Decode bytes correctly based on specification
     current_kW := h.CurrentPower()
-    power_kWh := Int16FromValue(h.power_kWh)/10
+    power_kWh := float32(Int16FromValue(h.power_kWh))/10.0
     power_MWh := Int16FromValue(h.power_MWh)
     
-    return fmt.Sprintf("Current %f kW | %d kWh | %d MWh", current_kW, power_kWh, power_MWh)
+    return fmt.Sprintf("Current %f kW | %f kWh | %d MWh", current_kW, power_kWh, power_MWh)
 }
