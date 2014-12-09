@@ -20,18 +20,6 @@ func Init(file string) (embd.DigitalPin, error) {
 		return nil, pin_err
 	}
     
-	// clean up on exit
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		for _ = range c {
-			fmt.Println("Closing pin and terminating program.")
-            pin.Close()
-            embd.CloseGPIO()
-			os.Exit(0)
-		}
-	}()
-
     pin.SetDirection(embd.In)
     
     return pin, nil
@@ -56,6 +44,8 @@ func main() {
     		for _ = range c {
     			fmt.Println("Flush")
                 logger.Flush()
+                pin.Close()
+                embd.CloseGPIO()
     			os.Exit(0)
     		}
     	}()
