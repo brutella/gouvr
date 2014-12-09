@@ -8,7 +8,7 @@ import (
     "github.com/brutella/gouvr/uvr/1611"
 )
 
-const LOG_FILE = "./logs/2014-09-14_interrupt.log"
+const LOG_FILE = "./logs/pbk-2014-12-08_1.log"
 func main() {
     packetReceiver  := uvr1611.NewPacketReceiver()
     packetDecoder   := uvr1611.NewPacketDecoder(packetReceiver)
