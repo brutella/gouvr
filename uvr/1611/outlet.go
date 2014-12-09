@@ -6,7 +6,7 @@ import (
 )
 
 type Outlet struct {
-    enabled bool
+    Enabled bool
 }
 
 // OutletsFromValue returns a list of 13 outlets which
@@ -32,7 +32,7 @@ func OutletsFromValue(value uvr.Value) []Outlet {
 func OutletsStringFromValue(value uvr.Value) string {
     var str string
     for i, v := range OutletsFromValue(value) {
-        str += fmt.Sprintf("A%d %t\n", i+1, v.enabled)
+        str += fmt.Sprintf("A%d %t\n", i+1, v.Enabled)
     }
     
     return str
