@@ -6,7 +6,7 @@ import(
 
 const (
     // SignalFrequency is the frequency of the UVR1611 data bus
-    SignalFrequency = 488
+    SignalFrequency = 488.0
 )
 
 // Bit masks
