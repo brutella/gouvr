@@ -31,6 +31,10 @@ The project contains an implementation of a pipeline to decode the data signal o
 
 ## TODO
 
-- Decode power of heatmeters (`heatmeter.go`)
+- Speed step `speed_step.go`
+	- Add methods to check if enabled
+	- Add method to get value
+- Heat meter `heatmeter.go`
+	- Decode power of heatmeters
 
 [UVR1611-Website]: http://www.ta.co.at/en/products/uvr1611/
