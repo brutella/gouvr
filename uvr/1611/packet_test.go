@@ -12,7 +12,7 @@ func TestPacket(t *testing.T) {
         uvr.Byte(0x00),
         uvr.Byte(0x00),
         uvr.Byte(0x00), uvr.Byte(0x00), uvr.Byte(0x00), uvr.Byte(0x00), uvr.Byte(0x00),
-        uvr.Byte(0xFA), uvr.Byte(0x20), // 
+        uvr.Byte(0xFA), uvr.Byte(0x20),
         uvr.Byte(0xAF), uvr.Byte(0x20),
         uvr.Byte(0x11), uvr.Byte(0x20),
         uvr.Byte(0x22), uvr.Byte(0x20),
@@ -28,7 +28,7 @@ func TestPacket(t *testing.T) {
         uvr.Byte(0x00), uvr.Byte(0x00),
         uvr.Byte(0x00), uvr.Byte(0x00),
         uvr.Byte(0x00), uvr.Byte(0x00),
-        uvr.Byte(0x00), uvr.Byte(0x00),
+        uvr.Byte(0x55), uvr.Byte(0x55), // 0101 0101 0101 0101
         uvr.Byte(0x00),
         uvr.Byte(0x00),
         uvr.Byte(0x00),
@@ -51,5 +51,4 @@ func TestPacket(t *testing.T) {
     assert.Equal(t, uvr.UInt16FromValue(packet.Input5), uint16(0x2033))
     assert.Equal(t, uvr.UInt16FromValue(packet.Input6), uint16(0x2044))
     assert.Equal(t, uvr.UInt16FromValue(packet.Input7), uint16(0x2055))
-    
 }

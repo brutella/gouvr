@@ -5,10 +5,11 @@ import(
 )
 
 const (
+    // SignalFrequency is the frequency of the UVR1611 data bus
     SignalFrequency = 488
 )
 
-// Input types
+// Bit masks
 const(
     InputTypeSignMask                     = 0x90 // 1000 0000
     InputTypeMask                         = 0x70 // 0111 0000
@@ -19,7 +20,7 @@ const(
     InputTypeRoomTemperatureOperationModeMask = 0x06 // 0000 0110
 )
 
-// Input Type
+// Input Types
 type InputType uvr.Byte
 const (
     InputTypeUnused          = InputType(0x00)
@@ -30,7 +31,7 @@ const (
     InputTypeRoomTemperature = InputType(0x70) // 0111 0000
 )
 
-// Room Temperature Operation Mode
+// Room Temperature Operation Modes
 type RoomTemperatureMode uvr.Byte
 const (
     RoomTemperatureModeUndefined = RoomTemperatureMode(0xFF)
