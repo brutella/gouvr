@@ -50,6 +50,6 @@ Twitter: [https://twitter.com/brutella](https://twitter.com/brutella)
 
 # License
 
-Axt is available under the MIT license. See the LICENSE file for more info.
+gouvr is available under the MIT license. See the LICENSE file for more info.
 
 [Ono]: https://github.com/mattt/Ono
