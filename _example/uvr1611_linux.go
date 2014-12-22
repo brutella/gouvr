@@ -1,17 +1,15 @@
-// Writes the GPIO pin values into the pipeline and logs packets to the console
 package main
 
 import (
     "fmt"
     "math/big"
-    "time"
     "os"
     "os/signal"
     
     "github.com/brutella/gouvr/uvr"
     "github.com/brutella/gouvr/uvr/1611"
     "github.com/kidoman/embd"
-    _"github.com/kidoman/embd/host/bbb"
+    _"github.com/kidoman/embd/host/rpi"
 )
 
 func Init(file string) (embd.DigitalPin, error) {
@@ -40,7 +38,7 @@ func Init(file string) (embd.DigitalPin, error) {
 }
 
 func main() {
-    pin, err := Init("P8_07")
+    pin, err := Init("P1_11")
     if err != nil {
         return
     }
@@ -55,26 +53,7 @@ func main() {
     signal          := uvr.NewSignal(syncDecoder)
     
     packetReceiver.RegisterCallback(func(packet uvr1611.Packet) {
-        /*
-        (Aussentemperatur)
-        (Fussbodenheizung Vorlauf)
-        (Buffer Warmwasser - Oben)
-        (Buffer Warmwasser - Mitte)
-        (Buffer Warmwasser - Unten)
-        (Raumtemperatur)
-        (Wärmetauscher Sekundär)
-        */
-        fmt.Println(time.Now().Format(time.Stamp))
-        fmt.Println("Zeit:", packet.Timestamp.ToString())
-        fmt.Println("Aussentemperatur:", uvr1611.InputValueToString(packet.Input1))
-        fmt.Println("Fussbodenheizung Vorlauf:", uvr1611.InputValueToString(packet.Input2))
-        fmt.Println("Buffer Warmwasser")
-        fmt.Println("   Oben:", uvr1611.InputValueToString(packet.Input3))
-        fmt.Println("   Mitte:", uvr1611.InputValueToString(packet.Input4))
-        fmt.Println("   Unten:", uvr1611.InputValueToString(packet.Input5))
-        fmt.Println("Raumtemperatur:", uvr1611.InputValueToString(packet.Input6))
-        fmt.Println("Wärmetauscher Sekundär:", uvr1611.InputValueToString(packet.Input7))
-        // packet.Log()
+        packet.Log()
         syncDecoder.Reset()
         byteDecoder.Reset()
         packetDecoder.Reset()
