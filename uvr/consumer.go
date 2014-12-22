@@ -1,29 +1,29 @@
 package uvr
 
 import (
-    "math/big"
-    "time"
+	"math/big"
+	"time"
 )
 
 type WordConsumer interface {
-    Consume(w big.Word) error
+	Consume(w big.Word) error
 }
 
 type BitConsumer interface {
-    Consume(b Bit) error
-    Reset()
+	Consume(b Bit) error
+	Reset()
 }
 
 type ByteConsumer interface {
-    Consume(b Byte) error
-    Reset()
+	Consume(b Byte) error
+	Reset()
 }
 
 type PacketConsumer interface {
-    Consume(p Packet) error
+	Consume(p Packet) error
 }
 
 // Called when the synchronization finished
 type SyncObserver interface {
-    SyncDone(t time.Time)
+	SyncDone(t time.Time)
 }
