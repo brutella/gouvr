@@ -38,3 +38,18 @@ The project contains an implementation of a pipeline to decode the data signal o
 	- Decode power of heatmeters
 
 [UVR1611-Website]: http://www.ta.co.at/en/products/uvr1611/
+
+# Contact
+
+Matthias Hochgatterer
+
+Github: [https://github.com/brutella/](https://github.com/brutella/)
+
+Twitter: [https://twitter.com/brutella](https://twitter.com/brutella)
+
+
+# License
+
+Axt is available under the MIT license. See the LICENSE file for more info.
+
+[Ono]: https://github.com/mattt/Ono
