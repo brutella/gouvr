@@ -4,7 +4,8 @@ import(
     "math/big"
 )
 
-// Holds info about sync pattern like expected bit value, timeouts, number of bits,...
+// SyncPattern contains info about expected bit value, timeouts, number of 
+// bits and is used to specify a sync pattern.
 type SyncPattern struct {
     I int
     Count int

@@ -5,12 +5,12 @@ import(
     "fmt"
 )
 
-// Logs messages to a file
 type fileLogger struct {
     filePath string
     buffer []byte
 }
 
+// NewConsoleLogger returns a logger which logs messages to a file
 func NewFileLogger(filePath string, buffer_size int) *fileLogger {
     l := &fileLogger{}
     l.filePath = filePath

@@ -8,6 +8,8 @@ import(
 
 type Byte uint8
 
+// ByteFromBits returns a byte from a list of bits
+// The bit's timestamps are ignored.
 func ByteFromBits(bits []Bit) Byte {
     var value uint8
     for index, bit := range bits {
@@ -33,6 +35,9 @@ type byteDecoder struct {
     bits []Bit
 }
 
+// NewByteDecoder returns a byte decoder
+// The ByteConsumer's is called after successfully decoding a byte.
+// The timeout specifies the time between two bits.
 func NewByteDecoder(consumer ByteConsumer, t Timeout) *byteDecoder {
     d := &byteDecoder{consumer:consumer}
     
@@ -68,10 +73,13 @@ func (d *byteDecoder) complete() {
 
 func (d *byteDecoder) SyncDone(t time.Time) {
 }
-    
+
 func (d *byteDecoder) Consume(bit Bit) error {
     encoding := d.encoding
     if encoding.last != nil {
+        // Check if the bit is within the allowed timeout
+        // If bit arrived too early, ignore it.
+        // If bit arrived too late, return error.
         delta := time.Duration(bit.Timestamp.UnixNano() - encoding.last.Timestamp.UnixNano()) 
         switch bit.CompareTimeoutToLast(encoding.timeout, *encoding.last) {
         case OrderedAscending:
@@ -80,12 +88,14 @@ func (d *byteDecoder) Consume(bit Bit) error {
             err := NewErrorf("[BYTE] Bit arrived too late %v", delta)
             return err
         case OrderedSame:
-            
         }
     }
     
     bits := append(d.bits, bit)
     d.encoding.last = &bit
+    // If list is full (specified by the capacity of the list)
+    // - check start and stop bit
+    // - create a byte from bits
     if len(bits) == cap(d.bits) {
         if encoding.start != nil {
             if bits[0].Raw != encoding.start.Raw {

@@ -8,18 +8,18 @@ import (
     "errors"
 )
 
-// A bit encapsulates a value and timestamp
+// Bit encapsulates a value and timestamp
 type Bit struct {
     Raw big.Word // 1 or 0
     Timestamp time.Time // nanoseconds
 }
 
-// Creates a bit with a specific value and current timestamp
+// NewBitFromWord returns a bit with a specific value and the current timestamp
 func NewBitFromWord(value big.Word) Bit {
     return Bit{Raw: value, Timestamp: time.Now()}
 }
 
-// Returns the time difference between bits
+// Since returns the time difference between two bits.
 func (b Bit) Since(bit Bit) time.Duration {
     return time.Duration(b.Timestamp.UnixNano() - bit.Timestamp.UnixNano())
 }
@@ -31,7 +31,7 @@ const(
     OrderedDescending   = iota // a > b
 )
 
-// Compares the time difference between bits based on a timeout
+// CompareTimeoutToLast compares the time difference between bits based on a timeout
 func (b Bit) CompareTimeoutToLast(timeout Timeout, last Bit) ComparisonResult {
     elapsed := b.Since(last)
     if timeout.min() > elapsed {
@@ -43,8 +43,7 @@ func (b Bit) CompareTimeoutToLast(timeout Timeout, last Bit) ComparisonResult {
     return OrderedSame
 }
 
-// Create a bit from a log string
-// 
+// BitFromLogString create a bit instance from a log string
 // The timestamp might be off by some nanoseconds due to problem converting string to int64.
 func BitFromLogString(str string) (Bit, error) {
     var bit Bit
@@ -65,10 +64,9 @@ func BitFromLogString(str string) (Bit, error) {
     return bit, err
 }
 
-// Creates a log string for a bit in the following format-
+// LogString creates a string representation of a bit in the following format-
 // 
 // {nanoseconds} {1|0}
-// ...
 func LogString(b Bit) string {
     nanoSeconds := strconv.FormatInt(b.Timestamp.UnixNano(), 10)
     switch b.Raw {

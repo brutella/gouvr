@@ -4,6 +4,7 @@ import (
     "time"
 )
 
+// NewTimeForUnixNano creates a Time instance from a unix timestamp
 func NewTimeForUnixNano(unixNano time.Duration) time.Time {
     seconds_f := float64(unixNano)/float64(time.Second)
     seconds_int := float64(int64(seconds_f))

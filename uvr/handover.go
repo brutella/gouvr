@@ -6,6 +6,7 @@ type handover struct {
     logger Logger
 }
 
+// NewHandover returns a bit consumer which hands over the received bits to a Logger and BitConsumer
 func NewHandover(consumer BitConsumer, l Logger) *handover {
     h := &handover{consumer: consumer}
     h.logger = l

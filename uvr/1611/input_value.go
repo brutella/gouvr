@@ -10,6 +10,7 @@ func IsUnusedInputValue(value uvr.Value) bool {
     return InputTypeFromValue(value) == InputTypeUnused
 }
 
+// RoomTemperatureModeFromValue returns the room temperature mode from the value.
 func RoomTemperatureModeFromValue(value uvr.Value) RoomTemperatureMode {
     if InputTypeFromValue(value) == InputTypeRoomTemperature {
         return RoomTemperatureMode(value.High & InputTypeRoomTemperatureOperationModeMask)

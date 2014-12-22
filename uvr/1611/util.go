@@ -9,12 +9,12 @@ type packetReceiver struct {
     callback PacketCallback
 }
 
-// Returns a packet receiver, which implements the PacketConsumer interface.
+// NewPacketReceiver returns a packet receiver, which implements the PacketConsumer interface.
 func NewPacketReceiver() *packetReceiver {
     return &packetReceiver{}
 }
 
-// Registers a function which is called when a new packet is consumed.
+// RegisterCallback registers a function which is called when a new packet is consumed.
 func (p *packetReceiver) RegisterCallback(callback PacketCallback) {
     p.callback = callback
 }

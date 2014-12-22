@@ -12,7 +12,7 @@ type packetDecoder struct {
     bytes []uvr.Byte
 }
 
-// Returns a new packet decoder, which implements the ByteConsumer interface.
+// NewPacketDecoder returns a new packet decoder, which implements the ByteConsumer interface.
 // The decoder calls the Consume() method of the specified packet consumer when new packets were decoded
 func NewPacketDecoder(consumer PacketConsumer) *packetDecoder {
     d := &packetDecoder{consumer: consumer}

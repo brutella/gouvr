@@ -15,9 +15,9 @@ type syncDecoder struct {
     pattern uvr.SyncPattern
 }
 
-// Returns a new sync decoder, which implements the BitConsumer interface.
-// The decoder syncs the transmission on 32 consecutive high bits.
-// After successful sync, the SyncDone() of the observer is called and the consumed bits are passed through to the specified bit consumer.
+// NewSyncDecoder returns a sync decoder, which implements the BitConsumer interface.
+// After successful sync, the SyncDone() of the observer is called and the consumed 
+// bits are passed through to the specified bit consumer.
 func NewSyncDecoder(bitConsumer uvr.BitConsumer, syncObserver uvr.SyncObserver, t uvr.Timeout) *syncDecoder {
     d := &syncDecoder{bitConsumer: bitConsumer, syncObserver: syncObserver}
     
@@ -51,21 +51,23 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
             s.Reset()
         }
     } else {
+        // Check if the bit is within the allowed timeout
+        // If bit arrived too early (should actually never happen), ignore it.
+        // If bit arrived too late, return error.
         pattern := s.pattern
         if pattern.Last != nil {
             delta := time.Duration(bit.Timestamp.UnixNano() - pattern.Last.Timestamp.UnixNano()) 
             switch bit.CompareTimeoutToLast(pattern.Timeout, *pattern.Last) {
             case uvr.OrderedAscending:
-                // fmt.Printf("[SYNC] Bit arrived too early (%v)\n", delta)
                 return nil
             case uvr.OrderedDescending:
                 s.Reset()
-                err := uvr.NewErrorf("[SYNC] Bit arrived too late (%v)", delta)
-                return err
+                return uvr.NewErrorf("[SYNC] Bit arrived too late (%v)", delta)
             case uvr.OrderedSame:
             }
         }
         
+        // Only accept low-high bit pattern
         if (pattern.Last == nil && bit.Raw == big.Word(0)) || (pattern.Last != nil && pattern.Last.Raw != bit.Raw) {
             s.pattern.I++
             s.pattern.Last = &bit
@@ -74,7 +76,6 @@ func (s *syncDecoder) Consume(bit uvr.Bit) error {
                     s.syncObserver.SyncDone(bit.Timestamp)
                 }
                 s.synced = true
-                // fmt.Println("[SYNC] Done")
             }
         } else {
             s.Reset()

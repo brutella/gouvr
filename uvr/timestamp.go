@@ -13,6 +13,8 @@ type Timestamp struct {
     year    Byte // since 2000, e.g. 3 == 2003
 }
 
+// NewTimestamp returns a timestamp for a list of bytes
+// 
 // The 5th bit of the hour byte indicates a daylight saving time (1 = daylight saving)
 // Bit 0-4 of the hour byte contain the actual value
 func NewTimestamp(bytes []Byte) Timestamp {

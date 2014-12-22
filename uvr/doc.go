@@ -1,4 +1,2 @@
-/*
-Defines types and implements functionality to read values for an UVR data bus.
-*/
+// Defines types and implements functionality to decode the UVR data bus.
 package uvr

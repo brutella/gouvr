@@ -14,6 +14,7 @@ const(
     DeviceTypeESR21     = DeviceType(0x70)
 )
 
+// DeviceTypeToString returns a string representation of the device type
 func DeviceTypeToString(deviceType DeviceType) string {
     switch deviceType {
     case DeviceTypeUVR31:

@@ -14,6 +14,9 @@ type packetDecoder struct {
     bytes []Byte
 }
 
+// NewPacketDecoder returns byte consumer which creates a packet from a list of bytes.
+// The PacketConsumer's Consume method is called for every new packet.
+// The byte_count argument specifies the number of bytes in a packet.
 func NewPacketDecoder(consumer PacketConsumer, byte_count int) *packetDecoder {
     d := &packetDecoder{consumer: consumer}
     d.encoding = packetEncoding{count: byte_count}

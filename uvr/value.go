@@ -1,11 +1,12 @@
 package uvr
 
-// A value constists of 2 bytes
+// A value consists of 2 bytes
 type Value struct {
     Low Byte
     High Byte
 }
 
+// NewValue returns a value from 2 bytes
 func NewValue(bytes []Byte) Value {
     return Value{
         Low: bytes[0],
@@ -27,6 +28,7 @@ type BigValue struct {
     High Value
 }
 
+// NewBigValue returns a big value from 4 bytes
 func NewBigValue(bytes []Byte) BigValue {
     return BigValue{
         Low: NewValue(bytes[0:2]),

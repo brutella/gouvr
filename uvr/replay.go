@@ -7,11 +7,11 @@ import(
     "bytes"
 )
 
-// Replays a bit log file
 type replayer struct {
     consumer BitConsumer
 }
-
+// NewReplayer returns a replayer which simulates a bit steam from a log file.
+// The bit log strings must be created by using the result of calling `LogString(bit)`.
 func NewReplayer(consumer BitConsumer) *replayer {
     replayer := &replayer{consumer:consumer}
     

@@ -10,7 +10,7 @@ type Outlet struct {
 }
 
 // OutletsFromValue returns a list of 13 outlets which
-// represent the outlet A1 to A13
+// stands for outlet 1-13
 func OutletsFromValue(value uvr.Value) []Outlet {
     return []Outlet{
         Outlet{value.Low & 0x01 == 0x01},
@@ -29,6 +29,7 @@ func OutletsFromValue(value uvr.Value) []Outlet {
     }
 }
 
+// OutletsStringFromValue returns a string representation of outlets from the value.
 func OutletsStringFromValue(value uvr.Value) string {
     var str string
     for i, v := range OutletsFromValue(value) {

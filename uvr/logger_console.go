@@ -1,9 +1,9 @@
 package uvr
 
-// Logs messages to the console
 type consoleLogger struct {
 }
 
+// NewConsoleLogger returns a logger which logs messages to the console
 func NewConsoleLogger() *consoleLogger {
     return &consoleLogger{}
 }

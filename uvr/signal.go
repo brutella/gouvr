@@ -4,12 +4,12 @@ import(
     "math/big"
 )
 
-// Creates bit (w/ timestamp) stream out of a "raw" bit stream
 type signal struct {
     WordConsumer
     consumer BitConsumer
 }
 
+// NewSignal returns a word consumer which creates a Bit stream out of a Word stream
 func NewSignal(consumer BitConsumer) *signal {
     d := &signal{consumer: consumer}
     return d

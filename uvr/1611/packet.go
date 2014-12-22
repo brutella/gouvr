@@ -8,7 +8,7 @@ import (
 
 const PacketByteCount = 64
 
-// The struct for an UVR1611 packet.
+// Packet represents an UVR1611 packet.
 type Packet struct {                   // Bytes
     DeviceType uvr.DeviceType          // 1
     DeviceTypeInverted uvr.DeviceType  // 2
