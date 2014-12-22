@@ -12,7 +12,7 @@ This project provides a boilerplate to read data from the data bus from devices 
 - UVR 61-3
 - ESR 21
 
-The data bus uses a signal at 488 frequency transmits bits. The bit stream is manchester encoded as described in `docs/Schnittstelle Datenleitung 1.6.pdf` (German only).
+The data bus uses a signal at 488 frequency to transmit bits. The bit stream is manchester encoded as described in `docs/Schnittstelle Datenleitung 1.6.pdf` (German only).
 
 ## UVR1611
 
