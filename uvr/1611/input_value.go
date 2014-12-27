@@ -53,7 +53,7 @@ func DecodeInputValue(value uvr.Value) (InputType, float32) {
 				result = 1.0
 			} else {
 				// For negative values, set bit 4,5,6 in high byte to 1
-				high_byte |= 0x70 // 0111 0000
+				high_byte |= 0xF0 // 1111 0000
 				result = float32(low_byte) + float32(high_byte)*256 - 65536
 				result /= 10.0
 			}

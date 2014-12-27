@@ -17,6 +17,17 @@ func TestTemperatureInputValue(t *testing.T) {
 	assert.Equal(t, f, 8.0)
 }
 
+func TestNegativeTemperatureInputValue(t *testing.T) {
+	value := uvr.NewValue([]uvr.Byte{
+		uvr.Byte(0xE6), // 1110 0110
+		uvr.Byte(0xAF), // 1010 1111
+	})
+
+	input_type, f := DecodeInputValue(value)
+	assert.Equal(t, input_type, InputTypeTemperature)
+	assert.Equal(t, f, -2.6)
+}
+
 func TestRoomTemperatureInputValue(t *testing.T) {
 	value := uvr.NewValue([]uvr.Byte{
 		uvr.Byte(0x50), // 0101 0000

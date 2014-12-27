@@ -11,7 +11,7 @@ const (
 
 // Bit masks
 const (
-	InputTypeSignMask      = 0x90 // 1000 0000
+	InputTypeSignMask      = 0x80 // 1000 0000
 	InputTypeMask          = 0x70 // 0111 0000
 	InputTypeHighValueMask = 0x0F // 0000 1111
 	InputTypeLowValueMask  = 0xFF // 1111 1111
