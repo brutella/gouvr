@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"strings"
 	"testing"
@@ -14,7 +13,10 @@ func TestInvalidSync(t *testing.T) {
 	signal := NewSignal(syncDecoder)
 
 	writeWords([]big.Word{1, 1, 1, 0, 1, 1, 1, 1}, signal, timeout)
-	assert.False(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestValidSync(t *testing.T) {
@@ -24,7 +26,10 @@ func TestValidSync(t *testing.T) {
 	signal := NewSignal(syncDecoder)
 
 	writeWords([]big.Word{0, 0, 1, 1, 1, 1, 1, 1, 1, 1}, signal, timeout)
-	assert.True(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestSyncFromLog(t *testing.T) {
@@ -41,12 +46,19 @@ func TestSyncFromLog(t *testing.T) {
 	bits := make([]Bit, len(lines))
 	for _, line := range lines {
 		bit, err := BitFromLogString(line)
-		assert.Nil(t, err)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
 		bits = append(bits, bit)
 	}
 	bitReceiver := NewTestBitReceiver()
 	timeout := NewTimeout(488.0, 0.3)
 	syncDecoder := NewSyncDecoder(bitReceiver, nil, timeout)
 	writeBits(bits, syncDecoder)
-	assert.True(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

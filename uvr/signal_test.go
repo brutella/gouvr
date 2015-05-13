@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"testing"
 )
@@ -31,9 +30,18 @@ func TestSignal(t *testing.T) {
 	s.Consume(big.Word(0))
 	s.Consume(big.Word(1))
 
-	assert.Equal(t, len(c.bits), 2)
+	if is, want := len(c.bits), 2; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+
 	b0 := c.bits[0]
 	b1 := c.bits[1]
-	assert.Equal(t, b0.Raw, big.Word(0))
-	assert.Equal(t, b1.Raw, big.Word(1))
+
+	if is, want := b0.Raw, big.Word(0); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+
+	if is, want := b1.Raw, big.Word(1); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

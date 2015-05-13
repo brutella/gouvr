@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"testing"
 )
@@ -18,12 +17,22 @@ func TestPacketDecoder(t *testing.T) {
 	signal := NewSignal(syncDecoder)
 
 	writeWords([]big.Word{1, 1, 1, 1, 1, 1, 1, 1}, signal, syncBitsTimeout) // sync
-	assert.True(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	writeWords([]big.Word{0, 1, 1, 1, 1, 1, 1, 1, 1, 1}, signal, bitsTimeout) // 0xFF
 	writeWords([]big.Word{0, 1, 0, 1, 0, 1, 0, 1, 0, 1}, signal, bitsTimeout) // 0x0F
 
-	assert.Equal(t, len(packetReceiver.packet), 2)
-	assert.Equal(t, packetReceiver.packet[0], Byte(0xFF))
-	assert.Equal(t, packetReceiver.packet[1], Byte(0x55))
+	if is, want := len(packetReceiver.packet), 2; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := packetReceiver.packet[0], Byte(0xFF); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+
+	if is, want := packetReceiver.packet[1], Byte(0x55); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

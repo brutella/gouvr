@@ -2,7 +2,6 @@ package uvr1611
 
 import (
 	"github.com/brutella/gouvr/uvr"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -13,8 +12,12 @@ func TestTemperatureInputValue(t *testing.T) {
 	})
 
 	input_type, f := DecodeInputValue(value)
-	assert.Equal(t, input_type, InputTypeTemperature)
-	assert.Equal(t, f, 8.0)
+	if is, want := input_type, InputTypeTemperature; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := f, float32(8.0); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestNegativeTemperatureInputValue(t *testing.T) {
@@ -24,8 +27,12 @@ func TestNegativeTemperatureInputValue(t *testing.T) {
 	})
 
 	input_type, f := DecodeInputValue(value)
-	assert.Equal(t, input_type, InputTypeTemperature)
-	assert.Equal(t, f, -2.6)
+	if is, want := input_type, InputTypeTemperature; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := f, float32(-2.6); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestRoomTemperatureInputValue(t *testing.T) {
@@ -33,13 +40,20 @@ func TestRoomTemperatureInputValue(t *testing.T) {
 		uvr.Byte(0x50), // 0101 0000
 		uvr.Byte(0x74), // 0111 0100
 	})
-
 	input_type, f := DecodeInputValue(value)
-	assert.Equal(t, input_type, InputTypeRoomTemperature)
-	assert.Equal(t, f, 8.0)
+
+	if is, want := input_type, InputTypeRoomTemperature; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := f, float32(8.0); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	mode := RoomTemperatureModeFromValue(value)
-	assert.Equal(t, mode, RoomTemperatureModeLowering)
+
+	if is, want := mode, RoomTemperatureModeLowering; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestDigitalInputValue(t *testing.T) {
@@ -48,7 +62,9 @@ func TestDigitalInputValue(t *testing.T) {
 		uvr.Byte(0x90), // 1001 0000
 	})
 
-	assert.True(t, IsDigitalInputValueOn(value))
+	if is, want := IsDigitalInputValueOn(value), true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestUnusedInputValue(t *testing.T) {
@@ -57,5 +73,7 @@ func TestUnusedInputValue(t *testing.T) {
 		uvr.Byte(0x00), // 0000 0000
 	})
 
-	assert.True(t, IsUnusedInputValue(value))
+	if is, want := IsUnusedInputValue(value), true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

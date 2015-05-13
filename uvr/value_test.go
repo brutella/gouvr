@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -10,7 +9,11 @@ func TestValue(t *testing.T) {
 	value := NewValue(bytes)
 
 	// 0xFA11 = 64017
-	assert.Equal(t, UInt16FromValue(value), uint16(64017))
+	if is, want := UInt16FromValue(value), uint16(64017); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 	// 0xFA11 = -31249 unsigned
-	assert.Equal(t, Int16FromValue(value), -((65536 / 2) - 31249))
+	if is, want := Int16FromValue(value), int16(-((65536 / 2) - 31249)); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

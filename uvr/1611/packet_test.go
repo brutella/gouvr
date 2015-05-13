@@ -2,7 +2,6 @@ package uvr1611
 
 import (
 	"github.com/brutella/gouvr/uvr"
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -40,15 +39,32 @@ func TestPacket(t *testing.T) {
 	bytes = append(bytes, ChecksumFromBytes(bytes))
 
 	packet, err := PacketFromBytes(bytes)
-	assert.Nil(t, err)
-	assert.NotNil(t, packet)
+	if err != nil {
+		t.Fatal(err)
+	}
 
-	assert.Equal(t, packet.DeviceType, uvr.DeviceTypeUVR1611)
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input1), uint16(0x20FA))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input2), uint16(0x20AF))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input3), uint16(0x2011))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input4), uint16(0x2022))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input5), uint16(0x2033))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input6), uint16(0x2044))
-	assert.Equal(t, uvr.UInt16FromValue(packet.Input7), uint16(0x2055))
+	if is, want := packet.DeviceType, uvr.DeviceTypeUVR1611; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input1), uint16(0x20FA); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input2), uint16(0x20AF); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input3), uint16(0x2011); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input4), uint16(0x2022); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input5), uint16(0x2033); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input6), uint16(0x2044); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := uvr.UInt16FromValue(packet.Input7), uint16(0x2055); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

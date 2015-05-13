@@ -27,9 +27,9 @@ func (b Bit) Since(bit Bit) time.Duration {
 type ComparisonResult int
 
 const (
-	OrderedAscending  = iota // a < b
-	OrderedSame       = iota // a = b
-	OrderedDescending = iota // a > b
+	OrderedAscending  ComparisonResult = iota // a < b
+	OrderedSame       ComparisonResult = iota // a = b
+	OrderedDescending ComparisonResult = iota // a > b
 )
 
 // CompareTimeoutToLast compares the time difference between bits based on a timeout

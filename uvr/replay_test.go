@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"testing"
 )
@@ -19,11 +18,19 @@ func TestRecordAndReplayBitStream(t *testing.T) {
 	}
 	writeBits(bits, handover)
 	logger.Flush()
-	assert.Equal(t, len(bitReceiver.bits), 5)
+
+	if is, want := len(bitReceiver.bits), 5; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	// Read file
 	bitReceiver = NewTestBitReceiver()
 	replayer := NewReplayer(bitReceiver)
-	assert.Nil(t, replayer.Replay(filePath))
-	assert.Equal(t, len(bitReceiver.bits), 5)
+
+	if x := replayer.Replay(filePath); x != nil {
+		t.Fatal(x)
+	}
+	if is, want := len(bitReceiver.bits), 5; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

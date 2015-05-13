@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"testing"
 )
@@ -14,7 +13,14 @@ func TestInvalidBytesConsumption(t *testing.T) {
 	signal := NewSignal(syncDecoder)
 
 	writeWords([]big.Word{1, 1, 1, 1, 1, 1, 1, 1}, signal, timeout) // sync
-	assert.True(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+
 	writeWords([]big.Word{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, signal, timeout) // wrong start byte resets the sync
-	assert.False(t, syncDecoder.synced)
+
+	if is, want := syncDecoder.synced, false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

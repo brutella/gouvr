@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
@@ -11,18 +10,37 @@ func TestTimeout(t *testing.T) {
 	deviation := 0.5 // 50%
 	timeout := NewTimeout(duration, deviation)
 
-	assert.Equal(t, timeout.min(), time.Duration(250*time.Millisecond))
-	assert.Equal(t, timeout.max(), time.Duration(750*time.Millisecond))
+	if is, want := timeout.min(), time.Duration(250*time.Millisecond); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := timeout.max(), time.Duration(750*time.Millisecond); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	now := time.Now()
-	assert.True(t, timeout.IsFutureSince(now))
-	assert.False(t, timeout.IsPastSince(now))
+
+	if is, want := timeout.IsFutureSince(now), true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := timeout.IsPastSince(now), false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	time.Sleep(250 * time.Millisecond)
-	assert.False(t, timeout.IsFutureSince(now))
-	assert.False(t, timeout.IsPastSince(now))
+
+	if is, want := timeout.IsFutureSince(now), false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := timeout.IsPastSince(now), false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 
 	time.Sleep(600 * time.Millisecond)
-	assert.False(t, timeout.IsFutureSince(now))
-	assert.True(t, timeout.IsPastSince(now))
+
+	if is, want := timeout.IsFutureSince(now), false; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
+	if is, want := timeout.IsPastSince(now), true; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

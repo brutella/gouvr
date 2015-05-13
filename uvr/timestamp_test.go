@@ -1,7 +1,6 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
@@ -14,5 +13,8 @@ func TestTimestampToString(t *testing.T) {
 		Byte(14), // y
 	}
 	timestamp := NewTimestamp(bytes)
-	assert.Equal(t, timestamp.ToString(), "2014-12-02 23:45:00")
+
+	if is, want := timestamp.ToString(), "2014-12-02 23:45:00"; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }

@@ -1,60 +1,64 @@
 package uvr
 
 import (
-	"github.com/stretchr/testify/assert"
 	"math/big"
 	"testing"
 	"time"
 )
 
-func Microseconds(t time.Time) int64 {
-	return int64((t.UnixNano() % 1e9) / 1e3)
-}
-
-func Milliseconds(t time.Time) int64 {
+func milliseconds(t time.Time) int64 {
 	return int64((t.UnixNano() % 1e9) / 1e6)
 }
 
 func TestLogStringFromBit(t *testing.T) {
 	bit := NewBitFromWord(1)
-
 	str := LogString(bit)
-	assert.NotNil(t, str)
+	lbit, err := BitFromLogString(str)
 
-	restored_bit, err := BitFromLogString(str)
-	assert.Nil(t, err)
-	assert.Equal(t, bit.Raw, restored_bit.Raw)
-
+	if err != nil {
+		t.Fatal(err)
+	}
+	if is, want := lbit.Raw, bit.Raw; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 	// Only test milliseconds
-	assert.Equal(t, Milliseconds(bit.Timestamp), Milliseconds(restored_bit.Timestamp))
+	if is, want := milliseconds(lbit.Timestamp), milliseconds(bit.Timestamp); is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
-func TestBitsWithinTimeout(t *testing.T) {
+func TestBitsTimeout(t *testing.T) {
 	bit1 := Bit{Raw: big.Word(1), Timestamp: time.Unix(0, 1001)}
-	bit2 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1002)}
+	bit0 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1002)}
 
-	timeout := Timeout{duration: time.Duration(1), deviation: 0}
+	tout := Timeout{duration: time.Duration(1), deviation: 0}
 	// time difference is 1002 - 1001 = 1
 	// valid timeout = +/-1
-	assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedSame)
+	if is, want := bit0.CompareTimeoutToLast(tout, bit1), OrderedSame; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
-func TestBitsWithinTimeout2(t *testing.T) {
+func TestBitsTimeoutDeviation(t *testing.T) {
 	bit1 := Bit{Raw: big.Word(1), Timestamp: time.Unix(0, 1001)}
-	bit2 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1003)}
+	bit0 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1003)}
 
-	timeout := Timeout{duration: time.Duration(1), deviation: 1}
+	tout := Timeout{duration: time.Duration(1), deviation: 1}
 	// time difference is 1003 - 1001 = 2
 	// valid timeout = +/-2
-	assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedSame)
+	if is, want := bit0.CompareTimeoutToLast(tout, bit1), OrderedSame; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
 
 func TestBitsOutOfTimeout(t *testing.T) {
 	bit1 := Bit{Raw: big.Word(1), Timestamp: time.Unix(0, 1001)}
-	bit2 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1003)}
+	bit0 := Bit{Raw: big.Word(0), Timestamp: time.Unix(0, 1003)}
 
-	timeout := Timeout{duration: time.Duration(1), deviation: 0}
+	tout := Timeout{duration: time.Duration(1), deviation: 0}
 	// time difference is 1003 - 1001 = 2
 	// valid timeout = +/-1
-	assert.Equal(t, bit2.CompareTimeoutToLast(timeout, bit1), OrderedDescending)
+	if is, want := bit0.CompareTimeoutToLast(tout, bit1), OrderedDescending; is != want {
+		t.Fatalf("is=%v want=%v", is, want)
+	}
 }
